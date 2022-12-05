@@ -3,7 +3,7 @@
 A utility function to format a js Date using Intl.DateTimeFormat and a formatting string
 template (like 'yyyy/mm/dd').
 
-Syntax:
+### Syntax:
 
 `[format function](date, [template], [moreOptions])`
 
@@ -26,5 +26,24 @@ Syntax:
       - **Note**: in case of a 12 hour clock OR a locale using
       a 12 hour clock, 'dp' in the template will give you
       the (locale dependent) day period
+
+### Date/Time-units to use in the template string
+- `MM`: localized full month name
+- `M`: localized abbreviated month name
+- `m`: Month number (1 - 12),
+- `mm`: Month number two digits (01 - 12)
+- `yyyy`: The full year
+- `yy`: The year (2 digits)
+- `WD`: localized long day of week
+- `wd`: localized abbreviated day of week
+- `d`: Date number (1 - 31)
+- `dd`: Date number 2 digits (01 - 31)
+- `h`: Hour number (1 - 24)
+- `hh`: Hour number 2 digits (01 - 24)
+- `mi`: Minute number (0 - 59),
+- `mmi`: Minute number (00 - 59),
+- `s`: Second number (0 - 59)
+- `ss`: Second number (00 - 59)
+- `ms`: milliseconds number (0 - 999),
 
 See [this small stackblitz project](https://stackblitz.com/edit/web-platform-5wqvwc?file=script.js) for some examples.
