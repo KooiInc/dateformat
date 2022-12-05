@@ -47,8 +47,9 @@ template (like '`yyyy/mm/dd`').
 - `ms`: milliseconds number (0 - 999),
 
 ### Usage
-```language js
+```
 import dtFormat from '[location of index.js]';
+// the module is available from github via `https://kooiinc.github.io/dateformat/index.js`;
 const englishWeekdayAbbr = dtFormat(new Date, `wd, d MM yyyy hh:mmi dp`, `l:en`);
 const francaisWithText = dtFormat(new Date, `{Voilà} <i>WD</i>, d MM yyyy h{h}:mmi{m}`, `l:fr`)
 ```
