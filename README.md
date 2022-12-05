@@ -1,7 +1,7 @@
 # dateformat
 
 A utility function to format a js Date using Intl.DateTimeFormat and a formatting string
-template (like 'yyyy/mm/dd').
+template (like '`yyyy/mm/dd`').
 
 ### Syntax:
 
@@ -28,14 +28,14 @@ template (like 'yyyy/mm/dd').
       the (locale dependent) day period
 
 ### Date/Time-units to use in the template string
-- `MM`: localized full month name
-- `M`: localized abbreviated month name
+- `MM`: Locale dependent full month name
+- `M`: Locale dependent abbreviated month name
 - `m`: Month number (1 - 12),
 - `mm`: Month number two digits (01 - 12)
 - `yyyy`: The full year
 - `yy`: The year (2 digits)
-- `WD`: localized long day of week
-- `wd`: localized abbreviated day of week
+- `WD`: Locale dependent long day of week
+- `wd`: Locale dependent abbreviated day of week
 - `d`: Date number (1 - 31)
 - `dd`: Date number 2 digits (01 - 31)
 - `h`: Hour number (1 - 24)
