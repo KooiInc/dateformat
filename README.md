@@ -46,4 +46,11 @@ template (like '`yyyy/mm/dd`').
 - `ss`: Second number (00 - 59)
 - `ms`: milliseconds number (0 - 999),
 
-See [this small stackblitz project](https://stackblitz.com/edit/web-platform-5wqvwc?file=script.js) for some examples.
+### Usage
+```language js
+    import dtFormat from '[location of index.js]';
+    const englishShortWeekday = dtFormat(new Date, `wd, d MM yyyy hh:mmi dp`, `l:en`);
+    const francaisWithText = dtFormat(new Date, `{Voilà} <i>WD</i>, d MM yyyy h{h}:mmi{m}`, `l:fr`)
+```
+
+See [this small stackblitz project](https://stackblitz.com/edit/web-platform-5wqvwc?file=script.js) for a few examples.
