@@ -6,6 +6,7 @@ function DateFormatFactory() {
     m: { month: `numeric` },
     mm: { month: `2-digit` },
     yyyy: { year: `numeric` },
+    yy: { year: `2-digit` },
     WD: { weekday: `long` },
     wd: { weekday: `short` },
     d: { day: `numeric` },
