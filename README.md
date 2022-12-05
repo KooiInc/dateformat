@@ -51,7 +51,9 @@ template (like '`yyyy/mm/dd`').
 import dtFormat from '[location of index.js]';
 // the module is available from github via `https://kooiinc.github.io/dateformat/index.js`;
 const englishWeekdayAbbr = dtFormat(new Date, `wd, d MM yyyy hh:mmi dp`, `l:en`);
-const francaisWithText = dtFormat(new Date, `{Voilà} <i>WD</i>, d MM yyyy h{h}:mmi{m}`, `l:fr`)
+// Mon, 5 December 2022 12:13 PM
+const francaisWithText = dtFormat(new Date, `{Voilà} <i>WD</i>, d MM yyyy h{h}:mmi{m}`, `l:fr`);
+// Voilà lundi, 5 décembre 2022 12h:13m
 ```
 
 See [this small stackblitz project](https://stackblitz.com/edit/web-platform-5wqvwc?file=script.js) for a few examples.
