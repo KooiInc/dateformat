@@ -11,7 +11,7 @@ Syntax:
   current locale/time zone.
 - `date`: a Date Object
 - `template`: a string containing the Date elements to print for possible options to use in the formatting string. If two of these options must not be separated by a
-  non alphabetic character (typically space, / or -) in the result, use ~ as a separator, e.g. *yyyy~mm~dd*.
+  non alphabetic character (typically space, / or -) in the result, use ~ as a separator, e.g. `'yyyy~mm~dd'`.
 
   You can use plain text in the template by enclosing it in {}, e.g. '`{Today is} WD`'.
 
