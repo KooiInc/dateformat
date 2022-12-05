@@ -1,0 +1,25 @@
+{
+  "name": "datetimeformatter",
+  "version": "1.0.0",
+  "description": "Localized formatting a js Date using Intl.DateTimeFormat",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KooiInc/dateformat.git"
+  },
+  "keywords": [
+    "datetime",
+    "js",
+    "formatting",
+    "Intl.DateTimeFormat"
+  ],
+  "author": "KooiInc",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KooiInc/dateformat/issues"
+  },
+  "homepage": "https://github.com/KooiInc/dateformat#readme"
+}
