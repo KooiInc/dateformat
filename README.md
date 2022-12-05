@@ -48,9 +48,9 @@ template (like '`yyyy/mm/dd`').
 
 ### Usage
 ```language js
-    import dtFormat from '[location of index.js]';
-    const englishShortWeekday = dtFormat(new Date, `wd, d MM yyyy hh:mmi dp`, `l:en`);
-    const francaisWithText = dtFormat(new Date, `{Voilà} <i>WD</i>, d MM yyyy h{h}:mmi{m}`, `l:fr`)
+import dtFormat from '[location of index.js]';
+const englishWeekdayAbbr = dtFormat(new Date, `wd, d MM yyyy hh:mmi dp`, `l:en`);
+const francaisWithText = dtFormat(new Date, `{Voilà} <i>WD</i>, d MM yyyy h{h}:mmi{m}`, `l:fr`)
 ```
 
 See [this small stackblitz project](https://stackblitz.com/edit/web-platform-5wqvwc?file=script.js) for a few examples.
