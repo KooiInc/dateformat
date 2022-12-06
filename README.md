@@ -9,6 +9,8 @@ import dtFormat from '[location of index.js]';
 // the module is available @
 // https://kooiinc.github.io/dateformat/index.js
 // https://dateformat.kooi.dev/index.js
+// **minified by cdn.jsdelivr.net from npm
+// https://cdn.jsdelivr.net/npm/intl-dateformatter@latest/index.min.js
 const englishWeekdayAbbr = dtFormat(new Date, `wd, d MM yyyy hh:mmi dp`, `l:en`);
 // Mon, 5 December 2022 12:13 PM
 const francaisWithText = dtFormat(new Date, `{Voilà} <i>WD</i>, d MM yyyy h{h}:mmi{m}`, `l:fr`);
