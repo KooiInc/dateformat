@@ -18,9 +18,9 @@ template (like '`yyyy/mm/dd`').
   You can also use html in the template string (e.g. '`{<b>Today</b> is} <i>WD</i>`'). Just make sure every option unit (like yyyy, WD, MM) is surrounded by a non word character (so, not a-zA-z).
 - `moreOptions`: a string containing one or more (comma separated) shortened option parameters, where:
     - `l:[...]`: the locale (e.g. `l:en-US`, `l:fa-ir-u-ca-persian-nu-arabext`), see [this list](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) for locales, or [this page](https://betterprogramming.pub/formatting-dates-with-the-datetimeformat-object-9c808dc58604) for locale extension keys, or [Unicode Technical Standard #35](https://www.unicode.org/reports/tr35/tr35.html#BCP_47_Conformance).
-    - `tzn:[short|long|shortOffset|longOffset|shortGeneric|longGeneric]` the format of the timezone name (e.g.: tzn:short)
+    - `tzn:[short|long|shortOffset|longOffset|shortGeneric|longGeneric]` the format of the timezone name (e.g.: `l:en-GB,tzn:short` = CET)
     - `tz:[...]` the time zone (e.g. tz:Europe/Amsterdam), see column 'TZ Database name' in [this list](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
-    - `ds:/ts:[full|longmedium|short]` date- and/or time style (e.g. ds:medium)
+    - `ds:/ts:[full|long|medium|short]` date- and/or time style (e.g. ds:medium)
       - **Note**: dateStyle can be used with timeStyle and vice versa, but *not* with other options (e.g. weekday, hour, month, etc.), so these are ignored (in other words: you can't use them in your template: only 'dtf' in a template will actually give you a formatted date cf the date-/timestyle you supplied).
     - `e:[long|short|narrow]` the era representation (e.g. `l:en,e:long` = 'Anno Domini'). 
     - h12 - use 12 hour clock
