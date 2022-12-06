@@ -2,27 +2,26 @@ export default DateFormatFactory();
 
 function DateFormatFactory() {
   const dtfOptions = {
-    MM: { month: `long` },
-    M: { month: `short` },
-    m: { month: `numeric` },
-    mm: { month: `2-digit` },
+    MM:   { month: `long` },
+    M:    { month: `short` },
+    m:    { month: `numeric` },
+    mm:   { month: `2-digit` },
     yyyy: { year: `numeric` },
-    yy: { year: `2-digit` },
-    WD: { weekday: `long` },
-    wd: { weekday: `short` },
-    d: { day: `numeric` },
-    dd: { day: `2-digit` },
-    h: { hour: `numeric` },
-    hh: { hour: `2-digit` },
-    mi: { minute: `numeric` },
-    mmi: { minute: `2-digit` },
-    s: { second: `numeric` },
-    ss: { second: `2-digit` },
-    ms: { fractionalSecondDigits: 3 },
-    tz: { timeZoneName: `shortOffset` },
+    yy:   { year: `2-digit` },
+    WD:   { weekday: `long` },
+    wd:   { weekday: `short` },
+    d:    { day: `numeric` },
+    dd:   { day: `2-digit` },
+    h:    { hour: `numeric` },
+    hh:   { hour: `2-digit` },
+    mi:   { minute: `numeric` },
+    mmi:  { minute: `2-digit` },
+    s:    { second: `numeric` },
+    ss:   { second: `2-digit` },
+    ms:   { fractionalSecondDigits: 3 },
+    tz:   { timeZoneName: `shortOffset` },
     get re() {
-      const keys = Object.keys(this).filter(v => !/^re/.test(v))
-      return new RegExp(`\\b(${keys.join(`|`)})\\b`, `g`);
+      return new RegExp(`\\b(${Object.keys(this).filter(v => !/^re/.test(v)).join(`|`)})\\b`, `g`);
     },
   };
   const shortOpts = {
@@ -62,7 +61,7 @@ function DateFormatFactory() {
   };
 
   return (date, template, moreOptions) => {
-    const xTemplate = extractFromTemplate(template?.trim() ?? undefined);
+    const xTemplate = extractFromTemplate(template || undefined);
 
     if(/ds:|ts:/.test(moreOptions) || !template) {
       const opts = !moreOptions ? defaultLocale : getOpts(...moreOptions.split(`,`));
