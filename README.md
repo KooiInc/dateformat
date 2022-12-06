@@ -3,6 +3,19 @@
 A utility module to format a js Date using [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat) and a formatting string
 template (like '`yyyy/mm/dd`').
 
+### Usage
+```js
+import dtFormat from '[location of index.js]';
+// the module is available @
+// https://kooiinc.github.io/dateformat/index.js
+// https://dateformat.kooi.dev/index.js
+const englishWeekdayAbbr = dtFormat(new Date, `wd, d MM yyyy hh:mmi dp`, `l:en`);
+// Mon, 5 December 2022 12:13 PM
+const francaisWithText = dtFormat(new Date, `{Voilà} <i>WD</i>, d MM yyyy h{h}:mmi{m}`, `l:fr`);
+// Voilà lundi, 5 décembre 2022 12h:13m
+```
+See [this small stackblitz project](https://stackblitz.com/edit/web-platform-5wqvwc?file=script.js) for a few examples.
+
 ### Syntax:
 
 `[imported format function](date, [template], [moreOptions])`
@@ -45,17 +58,3 @@ template (like '`yyyy/mm/dd`').
 - `s`: Second number (0 - 59)
 - `ss`: Second number (00 - 59)
 - `ms`: milliseconds number (0 - 999),
-
-### Usage
-```js
-import dtFormat from '[location of index.js]';
-// the module is available @
-// https://kooiinc.github.io/dateformat/index.js
-// https://dateformat.kooi.dev/index.js
-const englishWeekdayAbbr = dtFormat(new Date, `wd, d MM yyyy hh:mmi dp`, `l:en`);
-// Mon, 5 December 2022 12:13 PM
-const francaisWithText = dtFormat(new Date, `{Voilà} <i>WD</i>, d MM yyyy h{h}:mmi{m}`, `l:fr`);
-// Voilà lundi, 5 décembre 2022 12h:13m
-```
-
-See [this small stackblitz project](https://stackblitz.com/edit/web-platform-5wqvwc?file=script.js) for a few examples.
