@@ -25,57 +25,58 @@ function DateFormatFactory() {
     },
   };
   const defaultLocale = { locale: `default` };
-  const extractFromTemplate = (str = `dtf`, plainTextIndex = 0) => ( {
-    texts: str.match(/(?<=\{)(.+?)(?=})/g) || [],
-    formatStr: ` ${ str
-      .replace(/(?<=\{)(.+?)(?=})/g, _ => `[${plainTextIndex++}]`)
-      .replace(/[{}]/g, ``)
-      .trim()} `}  );
+  const extractFromTemplate = (rawTemplateString = `dtf`, plainTextIndex = 0) => {
+    return {
+      texts: rawTemplateString.match(/(?<=\{)(.+?)(?=})/g) || [],
+      formatStr: ` ${ (rawTemplateString)
+        .replace(/(?<=\{)(.+?)(?=})/g, _ => `[${plainTextIndex++}]`)
+        .replace(/[{}]/g, ``)
+        .trim()} `,
+      finalize(dtf = ``, h12 = ``) {
+        return this.formatStr
+          .replace(/(?<=\[)(\d+?)(?=])/g, d => this.texts[d].trim())
+          .replace(/dtf/, dtf)
+          .replace(/dp\b/, h12)
+          .replace(/[~\[\]]/g, ``); }
+    };
+  };
   const getOpts = (...opts) => {
     if (opts && opts.length) {
       return opts.reduce( (acc, v) =>
-        v.startsWith(`tzn:`) ? {...acc, ...{ timeZoneName: v.slice(4) } }
-        : v.startsWith(`ds:`) ?  {...acc, ...{ dateStyle: v.slice(3) } }
-        : v.startsWith(`ts:`) ?  {...acc, ...{ timeStyle: v.slice(3) } }
-        : v.startsWith(`e:`) ?  {...acc, ...{ timeStyle: v.slice(2) } }
-        : v === `h12` ?  {...acc, ...{ hour12: true } }
-        : v.startsWith(`tz:`) ? {...acc, ...{ timeZone: v.slice(3) } }
-        : v.startsWith(`l:`) ? {...acc, ...{ locale: v.slice(2) } }
-        : dtfOptions[(v || `X`)] ? {...acc, ...dtfOptions[v]}
+        v.startsWith(`tzn:`) ? { ...acc, ...{ timeZoneName: v.slice(4) } }
+        : v.startsWith(`ds:`) ?  { ...acc, ...{ dateStyle: v.slice(3) } }
+        : v.startsWith(`ts:`) ?  { ...acc, ...{ timeStyle: v.slice(3) } }
+        : v.startsWith(`e:`) ?  { ...acc, ...{ timeStyle: v.slice(2) } }
+        : v === `h12` ?  { ...acc, ...{ hour12: true } }
+        : v.startsWith(`tz:`) ? { ...acc, ...{ timeZone: v.slice(3) } }
+        : v.startsWith(`l:`) ? { ...acc, ...{ locale: v.slice(2) } }
+        : dtfOptions[(v || `X`)] ? { ...acc, ...dtfOptions[v]}
         : acc, defaultLocale);
     }
     return {locale: `default`};
   };
-  const finalizeDtString = xTemplate =>
-    xTemplate.formatStr
-      .replace(/(?<=\[)(\d+?)(?=])/g, d => xTemplate.texts[d].trim())
-      .replace(/[~\[\]]/g, ``);
 
   return (date, template, moreOptions) => {
-    const xTemplate = extractFromTemplate(template);
+    const xTemplate = extractFromTemplate(template || undefined);
 
     if(/ds:|ts:/.test(moreOptions) || !template) {
       const opts = !moreOptions ? defaultLocale : getOpts(...moreOptions.split(`,`));
-      const dtf = Intl.DateTimeFormat(opts.locale, opts).format(date);
-      return `${finalizeDtString(xTemplate).replace(/dtf/, dtf)}`;
+      const formatted = Intl.DateTimeFormat(opts.locale, opts).format(date);
+      return xTemplate.finalize(formatted);
     }
 
     const optsCollected = {
-        ...getOpts(...xTemplate.formatStr.match(dtfOptions.re)),
-        ...(moreOptions ? getOpts(...moreOptions.split(`,`)) : {}) };
+      ...getOpts(...xTemplate.formatStr.match(dtfOptions.re)),
+      ...(moreOptions ? getOpts(...moreOptions.split(`,`)) : {}) };
     const dtf = Intl.DateTimeFormat(optsCollected.locale, optsCollected)
       .formatToParts(date)
       .filter(v => v.type !== `literal`);
-    const hour12 = dtf.find(v => v.type === `dayPeriod`);
+    const hour12 = dtf.find(v => v.type === `dayPeriod`)?.value || ``;
     xTemplate.formatStr = xTemplate.formatStr
       .replace(dtfOptions.re, dtUnit => {
-          const key = Object.keys(dtfOptions[dtUnit]).shift();
-          return dtf.find(v => v.type === key)?.value || dtUnit; } );
+        const key = Object.keys(dtfOptions[dtUnit]).shift();
+        return dtf.find(v => v.type === key)?.value || dtUnit; } );
 
-    if (hour12 && /dp\b/.test(xTemplate.formatStr)) {
-      xTemplate.formatStr = xTemplate.formatStr.replace(/dp\b/, hour12.value);
-    }
-
-    return finalizeDtString(xTemplate);
+    return xTemplate.finalize(...[,hour12]);
   };
 }
