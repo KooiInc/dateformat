@@ -1,6 +1,6 @@
 # dateformat
 
-A utility module to format a js Date using Intl.DateTimeFormat and a formatting string
+A utility module to format a js Date using [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat) and a formatting string
 template (like '`yyyy/mm/dd`').
 
 ### Syntax:
