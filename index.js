@@ -20,8 +20,10 @@ function DateFormatFactory() {
     ss:   { second: `2-digit` },
     ms:   { fractionalSecondDigits: 3 },
     tz:   { timeZoneName: `shortOffset` },
+    dl:   { locale: `default` },
     get re() {
-      return new RegExp(`\\b(${Object.keys(this).filter(v => !/^re/.test(v)).join(`|`)})\\b`, `g`);
+      const keys = Object.keys(this).filter(v => !/^re/.test(v))
+      return new RegExp(`\\b(${keys.join(`|`)})\\b`, `g`);
     },
   };
   const shortOpts = {
@@ -33,7 +35,6 @@ function DateFormatFactory() {
     tz:  v => ( { timeZone: v.slice(3) } ),
     l:   v => ( { locale: v.slice(2) } )
   };
-  const defaultLocale = { locale: `default` };
   const extractFromTemplate = (rawTemplateString = `dtf`, plainTextIndex = 0) => {
     return {
       texts: rawTemplateString.match(/(?<=\{)(.+?)(?=})/g) || [],
@@ -50,16 +51,16 @@ function DateFormatFactory() {
     };
   };
   const getOpts = (...opts) => opts?.reduce( (acc, optValue) => {
-      const shortOpt = optValue.slice(0, optValue.indexOf(`:`));
-      return shortOpt in shortOpts ? {...acc, ...shortOpts[shortOpt](optValue) }
-        : optValue in dtfOptions ? { ...acc, ...dtfOptions[optValue] } : acc;
-    }, defaultLocale) ?? defaultLocale;
+    const shortOpt = optValue.slice(0, optValue.indexOf(`:`));
+    return shortOpt in shortOpts ? {...acc, ...shortOpts[shortOpt](optValue) }
+      : optValue in dtfOptions ? { ...acc, ...dtfOptions[optValue] } : acc;
+  }, dtfOptions.dl) ?? dtfOptions.dl;
 
   return (date, template, moreOptions) => {
     const xTemplate = extractFromTemplate(template || undefined);
 
     if(/ds:|ts:/.test(moreOptions) || !template) {
-      const opts = !moreOptions ? defaultLocale : getOpts(...moreOptions.split(`,`));
+      const opts = !moreOptions ? dtfOptions.dl : getOpts(...moreOptions.split(`,`));
       const formatted = Intl.DateTimeFormat(opts.locale, opts).format(date);
       return xTemplate.finalize(formatted);
     }
