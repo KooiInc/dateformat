@@ -50,15 +50,11 @@ function DateFormatFactory() {
     };
   };
   const getOpts = (...opts) => {
-    if (opts && opts.length) {
-      return opts.reduce( (acc, optValue) => {
-        const shortOpt = optValue.slice(0, optValue.indexOf(`:`));
-        return shortOpt in shortOpts ? {...acc, ...shortOpts[shortOpt](optValue) }
-          : optValue in dtfOptions ? { ...acc, ...dtfOptions[optValue] } : acc;
-      }, defaultLocale);
-    }
-    return defaultLocale;
-  };
+    return opts?.reduce( (acc, optValue) => {
+      const shortOpt = optValue.slice(0, optValue.indexOf(`:`));
+      return shortOpt in shortOpts ? {...acc, ...shortOpts[shortOpt](optValue) }
+        : optValue in dtfOptions ? { ...acc, ...dtfOptions[optValue] } : acc;
+    }, defaultLocale) ?? defaultLocale;
 
   return (date, template, moreOptions) => {
     const xTemplate = extractFromTemplate(template || undefined);
