@@ -26,7 +26,7 @@ See [this small stackblitz project](https://stackblitz.com/edit/web-platform-5wq
 - `template`: a string containing the Date elements to print for possible options to use in the formatting string.
   - Make sure every option unit (like yyyy, WD, MM) is surrounded by a non word character (like space, /, -, so *not* [a-zA-Z]) 
   - If two of these options must not be separated in the result, use ~ as a separator, e.g. `'yyyy~mm~dd'` => 20221102.
-  - `dtf` in the template prints the date formatted cf `dateStyle` and/or `timeStyle` (see `moreOptions/ds:/ts:` below).
+  - `dtf` in the template prints the date formatted with the given options.
   - You can use plain text in the template by enclosing it in `{}`, e.g. '`{Today is} WD`'.
   - You can also use html in the template string (e.g. '`{<b>Today</b> is} <i>WD</i>`').
 - `moreOptions`: a string containing one or more (comma separated) shortened option parameters, where:
