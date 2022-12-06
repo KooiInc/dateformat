@@ -1,4 +1,5 @@
 export default DateFormatFactory();
+
 function DateFormatFactory() {
   const dtfOptions = {
     MM: { month: `long` },
@@ -24,6 +25,15 @@ function DateFormatFactory() {
       return new RegExp(`\\b(${keys.join(`|`)})\\b`, `g`);
     },
   };
+  const shortOpts = {
+    tzn: v => ( { timeZoneName: v.slice(4) } ),
+    ds:  v => ( { dateStyle: v.slice(3) } ),
+    ts:  v => ( { timeStyle: v.slice(3) } ),
+    e:   v => ( { timeStyle: v.slice(2) } ),
+    h12: _ => ( { hour12: true } ),
+    tz:  v => ( { timeZone: v.slice(3) } ),
+    l:   v => ( { locale: v.slice(2) } )
+  };
   const defaultLocale = { locale: `default` };
   const extractFromTemplate = (rawTemplateString = `dtf`, plainTextIndex = 0) => {
     return {
@@ -42,18 +52,13 @@ function DateFormatFactory() {
   };
   const getOpts = (...opts) => {
     if (opts && opts.length) {
-      return opts.reduce( (acc, v) =>
-        v.startsWith(`tzn:`) ? { ...acc, ...{ timeZoneName: v.slice(4) } }
-        : v.startsWith(`ds:`) ?  { ...acc, ...{ dateStyle: v.slice(3) } }
-        : v.startsWith(`ts:`) ?  { ...acc, ...{ timeStyle: v.slice(3) } }
-        : v.startsWith(`e:`) ?  { ...acc, ...{ timeStyle: v.slice(2) } }
-        : v === `h12` ?  { ...acc, ...{ hour12: true } }
-        : v.startsWith(`tz:`) ? { ...acc, ...{ timeZone: v.slice(3) } }
-        : v.startsWith(`l:`) ? { ...acc, ...{ locale: v.slice(2) } }
-        : dtfOptions[(v || `X`)] ? { ...acc, ...dtfOptions[v]}
-        : acc, defaultLocale);
+      return opts.reduce( (acc, optValue) => {
+        const shortOpt = optValue.slice(0, optValue.indexOf(`:`));
+        return shortOpt in shortOpts ? {...acc, ...shortOpts[shortOpt](optValue) }
+          : optValue in dtfOptions ? { ...acc, ...dtfOptions[optValue] } : acc;
+      }, defaultLocale);
     }
-    return {locale: `default`};
+    return defaultLocale;
   };
 
   return (date, template, moreOptions) => {
