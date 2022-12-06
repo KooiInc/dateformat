@@ -57,7 +57,7 @@ function DateFormatFactory() {
   };
 
   return (date, template, moreOptions) => {
-    const xTemplate = extractFromTemplate(template?.trim ?? undefined);
+    const xTemplate = extractFromTemplate(template?.trim() ?? undefined);
 
     if(/ds:|ts:/.test(moreOptions) || !template) {
       const opts = !moreOptions ? defaultLocale : getOpts(...moreOptions.split(`,`));
