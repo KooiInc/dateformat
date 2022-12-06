@@ -49,8 +49,7 @@ function DateFormatFactory() {
           .replace(/[~\[\]]/g, ``); }
     };
   };
-  const getOpts = (...opts) => {
-    return opts?.reduce( (acc, optValue) => {
+  const getOpts = (...opts) => opts?.reduce( (acc, optValue) => {
       const shortOpt = optValue.slice(0, optValue.indexOf(`:`));
       return shortOpt in shortOpts ? {...acc, ...shortOpts[shortOpt](optValue) }
         : optValue in dtfOptions ? { ...acc, ...dtfOptions[optValue] } : acc;
