@@ -24,7 +24,7 @@ function DateFormatFactory() {
       return new RegExp(`\\b(${keys.join(`|`)})\\b`, `g`);
     },
   };
-  const defaultLocale = {locale: `default` };
+  const defaultLocale = { locale: `default` };
   const extractFromTemplate = (str = `dtf`, plainTextIndex = 0) => ( {
     texts: str.match(/(?<=\{)(.+?)(?=})/g) || [],
     formatStr: ` ${ str
@@ -37,6 +37,7 @@ function DateFormatFactory() {
         v.startsWith(`tzn:`) ? {...acc, ...{ timeZoneName: v.slice(4) } }
         : v.startsWith(`ds:`) ?  {...acc, ...{ dateStyle: v.slice(3) } }
         : v.startsWith(`ts:`) ?  {...acc, ...{ timeStyle: v.slice(3) } }
+        : v.startsWith(`e:`) ?  {...acc, ...{ timeStyle: v.slice(2) } }
         : v === `h12` ?  {...acc, ...{ hour12: true } }
         : v.startsWith(`tz:`) ? {...acc, ...{ timeZone: v.slice(3) } }
         : v.startsWith(`l:`) ? {...acc, ...{ locale: v.slice(2) } }
