@@ -42,12 +42,15 @@ function DateFormatFactory() {
         .replace(/(?<=\{)(.+?)(?=})/g, _ => `[${plainTextIndex++}]`)
         .replace(/[{}]/g, ``)
         .trim()} `,
+      get units() {
+        return this.formatStr.match(dtfOptions.re) || [];
+      },
       finalize(dtf = ``, h12 = ``) {
         return this.formatStr
-          .replace(/(?<=\[)(\d+?)(?=])/g, d => this.texts[d].trim())
+          .replace(/~(\d+?)/g, `$1`)
+          .replace(/\[(\d+?)\]/g, (_, d) => this.texts[d].trim())
           .replace(/dtf/, dtf)
-          .replace(/dp\b/, h12)
-          .replace(/[~\[\]]/g, ``); }
+          .replace(/dp\b/, h12); }
     };
   };
   const getOpts = (...opts) => opts?.reduce( (acc, optValue) => {
@@ -56,27 +59,24 @@ function DateFormatFactory() {
       : optValue in dtfOptions ? { ...acc, ...dtfOptions[optValue] } : acc;
   }, dtfOptions.dl) ?? dtfOptions.dl;
 
-  return (date, template, moreOptions) => {
+  return (date, template, moreOptions = `l:default`) => {
     const xTemplate = extractFromTemplate(template || undefined);
 
     if(/ds:|ts:/.test(moreOptions) || !template) {
-      const opts = !moreOptions ? dtfOptions.dl : getOpts(...moreOptions.split(`,`));
+      const opts = getOpts(...moreOptions.split(`,`));
       const formatted = Intl.DateTimeFormat(opts.locale, opts).format(date);
       return xTemplate.finalize(formatted);
     }
 
-    const optsCollected = {
-      ...getOpts(...xTemplate.formatStr.match(dtfOptions.re)),
-      ...(moreOptions ? getOpts(...moreOptions.split(`,`)) : {}) };
+    const optsCollected = getOpts(...xTemplate.units.concat(moreOptions.split(`,`)).flat());
     const dtf = Intl.DateTimeFormat(optsCollected.locale, optsCollected)
       .formatToParts(date)
-      .filter(v => v.type !== `literal`);
-    const hour12 = dtf.find(v => v.type === `dayPeriod`)?.value || ``;
+      .reduce( (acc, v) => (v.type === `literal` ? acc : {...acc, [v.type]: v.value}), {});
     xTemplate.formatStr = xTemplate.formatStr
       .replace(dtfOptions.re, dtUnit => {
         const key = Object.keys(dtfOptions[dtUnit]).shift();
-        return dtf.find(v => v.type === key)?.value || dtUnit; } );
+        return dtf[key] || dtUnit; } );
 
-    return xTemplate.finalize(...[,hour12]);
+    return xTemplate.finalize(...[,dtf.dayPeriod || ``]);
   };
 }
