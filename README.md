@@ -28,7 +28,7 @@ See [this small stackblitz project](https://stackblitz.com/edit/web-platform-5wq
 - `template`: a string containing date/time units to print/output. See ['Date/Time-units to use in the template string'](#datetime-units-to-use-in-the-template-string) below.
   - Make sure every option unit (like yyyy, WD, MM) is surrounded by a non word character (like space, /, -, so *not* [a-zA-Z]).
   - You can use plain text in the template by enclosing it in `{}`, e.g. '`{Today is} WD`'.
-  - If two of the (numeric) options must not be separated in the result, put `~` (tilde) between them, e.g. `'yyyy~mm~dd'` => 20221102.<br>Use `{~}` or `~~` to output a tilde literal in the template (e.g.: `'yyyy~~mm{~}dd'` => 2022~11~02).
+  - If two of the (numeric) options must not be separated in the result, put `~` (tilde) between them, e.g. `'yyyy~mm~dd'` => 20221102.<br>Use `{~}` or `~~` to output a tilde literal in the template (e.g.: `'yyyy~~mm{~}dd'` => 2022&#126;11&#126;02).
   - `dtf` in the template prints the date formatted with the given options. If the template parameter is empty, `dtf` is inserted automatically. 
   - You can also use html in the template string (e.g. '`{<b>Today</b> is} <i>WD</i>`').
 - `moreOptions`: a string containing one or more (comma separated) shortened option parameters, where:
