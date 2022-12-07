@@ -37,7 +37,7 @@ See [this small stackblitz project](https://stackblitz.com/edit/web-platform-5wq
     - `tz:[...]` the time zone (e.g. `tz:Europe/Amsterdam`), see column *TZ database name* in [this list](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
     - `ds:/ts:[full|long|medium|short]` date- and/or time style (e.g. ds:medium)
       - **Note**: dateStyle can be used with timeStyle and vice versa, but *not* with other options (e.g. weekday, hour, month, etc.), so these are ignored (in other words: you can't use them in your template: only '`dtf`' in a template will actually give you a formatted date cf the date-/timestyle you supplied).
-    - `e:[long|short|narrow]` the era representation (e.g. `l:en,e:long` = 'Anno Domini'). 
+    - `e:[long|short|narrow]` the (locale specific) era representation (e.g. `l:en,e:long`: *era* in the template string is replaced with 'Anno Domini').
     - `h12` - use 12 hour clock.
       - **Note**: in case of a 12 hour clock *OR* a locale using a 12 hour clock, `dp` in the template will give you
       the (locale dependent) day period (e.g. AM/PM).
