@@ -25,7 +25,7 @@ See [this small stackblitz project](https://stackblitz.com/edit/web-platform-5wq
 - no `[template]` or `[moreOptions]`: returns date only, formatted to
   current locale/time zone.
 - `date`: a Date Object
-- `template`: a string containing date/time units to print/output. See ['Date/Time-units to use in the template string'](https://github.com/KooiInc/dateformat/blob/main/README.md#datetime-units-to-use-in-the-template-string) below.
+- `template`: a string containing date/time units to print/output. See ['Date/Time-units to use in the template string'](#datetime-units-to-use-in-the-template-string) below.
   - Make sure every option unit (like yyyy, WD, MM) is surrounded by a non word character (like space, /, -, so *not* [a-zA-Z]) 
   - If two of these options must not be separated in the result, use ~ as a separator, e.g. `'yyyy~mm~dd'` => 20221102.
   - `dtf` in the template prints the date formatted with the given options. If the template parameter is empty, `dtf` is inserted automatically. 
