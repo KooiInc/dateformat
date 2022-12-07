@@ -30,7 +30,7 @@ function DateFormatFactory() {
     tzn: v => ( { timeZoneName: v.slice(4) } ),
     ds:  v => ( { dateStyle: v.slice(3) } ),
     ts:  v => ( { timeStyle: v.slice(3) } ),
-    e:   v => ( { timeStyle: v.slice(2) } ),
+    e:   v => ( { era: v.slice(2) } ),
     h12: _ => ( { hour12: true } ),
     tz:  v => ( { timeZone: v.slice(3) } ),
     l:   v => ( { locale: v.slice(2) } )
@@ -45,11 +45,12 @@ function DateFormatFactory() {
       get units() {
         return this.formatStr.match(dtfOptions.re) || [];
       },
-      finalize(dtf = ``, h12 = ``) {
+      finalize(dtf = ``, h12 = ``, era = ``) {
         return this.formatStr
           .replace(/~(\d+?)/g, `$1`)
           .replace(/\[(\d+?)\]/g, (_, d) => this.texts[d].trim())
           .replace(/dtf/, dtf)
+          .replace(/era/, era)
           .replace(/dp\b/, h12); }
     };
   };
@@ -77,6 +78,6 @@ function DateFormatFactory() {
         const key = Object.keys(dtfOptions[dtUnit]).shift();
         return dtf[key] || dtUnit; } );
 
-    return xTemplate.finalize(...[,dtf.dayPeriod || ``]);
+    return xTemplate.finalize(...[,dtf.dayPeriod || ``, dtf.era || ``]);
   };
 }
