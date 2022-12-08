@@ -35,30 +35,28 @@ function DateFormatFactory() {
     tz:  v => ( { timeZone: v.slice(3) } ),
     l:   v => ( { locale: v.slice(2) } )
   };
-  const extractFromTemplate = (rawTemplateString = `dtf`, plainTextIndex = 0) => {
-    return {
-      texts: rawTemplateString.match(/(?<=\{)(.+?)(?=})/g) || [],
-      formatStr: ` ${ (rawTemplateString)
-        .replace(/(?<=\{)(.+?)(?=})/g, _ => `[${plainTextIndex++}]`)
-        .replace(/[{}]/g, ``)
-        .trim()} `,
-      get units() {
-        return this.formatStr.match(dtfOptions.re) || [];
-      },
-      finalize(dtf = ``, h12 = ``, era = ``) {
-        return this.formatStr
-          .replace(/~(\d+?)/g, `$1`)
-          .replace(/\[(\d+?)\]/g, (_, d) => this.texts[d].trim())
-          .replace(/dtf/, dtf)
-          .replace(/era/, era)
-          .replace(/dp\b/, h12); }
-    };
-  };
+  const extractFromTemplate = (rawTemplateString = `dtf`, plainTextIndex = 0) => ( {
+    texts: rawTemplateString.match(/(?<=\{)(.+?)(?=})/g) || [],
+    formatStr: ` ${ rawTemplateString
+      .replace(/(?<=\{)(.+?)(?=})/g, _ => `[${plainTextIndex++}]`)
+      .replace(/[{}]/g, ``)
+      .trim()} `,
+    get units() {
+      return this.formatStr.match(dtfOptions.re) || [];
+    },
+    finalize(dtf = ``, h12 = ``, era = ``) {
+      return this.formatStr
+        .replace(/~(\d+?)/g, `$1`)
+        .replace(/\[(\d+?)\]/g, (_, d) => this.texts[d].trim())
+        .replace(/dtf/, dtf)
+        .replace(/era/, era)
+        .replace(/dp\b/, h12); },
+  } );
   const getOpts = (...opts) => opts?.reduce( (acc, optValue) => {
     const shortOpt = optValue.slice(0, optValue.indexOf(`:`));
     return shortOpt in shortOpts ? {...acc, ...shortOpts[shortOpt](optValue) }
       : optValue in dtfOptions ? { ...acc, ...dtfOptions[optValue] } : acc;
-  }, dtfOptions.dl) ?? dtfOptions.dl;
+  }, dtfOptions.dl );
 
   return (date, template, moreOptions = `l:default`) => {
     const xTemplate = extractFromTemplate(template || undefined);
@@ -69,15 +67,13 @@ function DateFormatFactory() {
       return xTemplate.finalize(formatted);
     }
 
-    const optsCollected = getOpts(...xTemplate.units.concat(moreOptions.split(`,`)).flat());
+    const optsCollected = getOpts( ...xTemplate.units.concat(moreOptions.split(`,`)).flat() );
     const dtf = Intl.DateTimeFormat(optsCollected.locale, optsCollected)
       .formatToParts(date)
-      .reduce( (acc, v) => (v.type === `literal` ? acc : {...acc, [v.type]: v.value}), {});
+      .reduce( (parts, v) => ( v.type === `literal` ? parts : {...parts, [v.type]: v.value } ), {} );
     xTemplate.formatStr = xTemplate.formatStr
-      .replace(dtfOptions.re, dtUnit => {
-        const key = Object.keys(dtfOptions[dtUnit]).shift();
-        return dtf[key] || dtUnit; } );
+      .replace(dtfOptions.re, dtUnit => dtf[Object.keys(dtfOptions[dtUnit]).shift()] || dtUnit);
 
-    return xTemplate.finalize(...[,dtf.dayPeriod || ``, dtf.era || ``]);
+    return xTemplate.finalize(``, dtf.dayPeriod, dtf.era);
   };
 }
