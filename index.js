@@ -68,8 +68,7 @@ function DateFormatFactory() {
     }
 
     const optsCollected = getOpts( ...xTemplate.units.concat(moreOptions.split(`,`)).flat() );
-    const dtf = Intl.DateTimeFormat(optsCollected.locale, optsCollected)
-      .formatToParts(date)
+    const dtf = Intl.DateTimeFormat(optsCollected.locale, optsCollected).formatToParts(date)
       .reduce( (parts, v) => ( v.type === `literal` ? parts : {...parts, [v.type]: v.value } ), {} );
     xTemplate.formatStr = xTemplate.formatStr
       .replace(dtfOptions.re, dtUnit => dtf[Object.keys(dtfOptions[dtUnit]).shift()] || dtUnit);
