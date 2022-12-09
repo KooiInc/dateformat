@@ -30,9 +30,7 @@ function DateFormatFactory() {
       h12: _ => ( { hour12: true } ),
       tz:  v => ( { timeZone: v.slice(3) } ),
       l:   v => ( { locale: v.slice(2) } ), },
-    get re() {
-      return new RegExp(`\\b(${Object.keys(this.fixed).join(`|`)})\\b`, `g`);
-    },
+    get re() { return new RegExp(`\\b(${Object.keys(this.fixed).join(`|`)})\\b`, `g`); },
   };
   const extractFromTemplate = (rawTemplateString = `dtf`, plainTextIndex = 0) => ( {
     texts: rawTemplateString.match(/(?<=\{)(.+?)(?=})/g) || [],
@@ -40,9 +38,7 @@ function DateFormatFactory() {
       .replace(/(?<=\{)(.+?)(?=})/g, _ => `[${plainTextIndex++}]`)
       .replace(/[{}]/g, ``)
       .trim()} `,
-    get units() {
-      return this.formatStr.match(dtfOptions.re) || [];
-    },
+    get units() { return this.formatStr.match(dtfOptions.re) || []; },
     finalize(dtf = ``, h12 = ``, era = ``) {
       return this.formatStr
         .replace(/~(\d+?)/g, `$1`)
