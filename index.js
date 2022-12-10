@@ -21,15 +21,18 @@ function DateFormatFactory() {
       ss:   { second: `2-digit` },
       ms:   { fractionalSecondDigits: 3 },
       tz:   { timeZoneName: `shortOffset` },
-      dl:   { locale: `default` }, },
+      dl:   { locale: `default` },
+      h12:  { hour12: true },
+    },
     dynamic:  {
       tzn: v => ( { timeZoneName: v.slice(4) } ),
       ds:  v => ( { dateStyle: v.slice(3) } ),
       ts:  v => ( { timeStyle: v.slice(3) } ),
       e:   v => ( { era: v.slice(2) } ),
-      h12: _ => ( { hour12: true } ),
+      hrc: v => ( { hourCycle: `h${v.slice(4)}` } ),
       tz:  v => ( { timeZone: v.slice(3) } ),
-      l:   v => ( { locale: v.slice(2) } ), },
+      l:   v => ( { locale: v.slice(2) } ),
+    },
     get re() { return new RegExp(`\\b(${Object.keys(this.fixed).join(`|`)})\\b`, `g`); },
   };
   const extractFromTemplate = (rawTemplateString = `dtf`, plainTextIndex = 0) => ( {
@@ -52,16 +55,13 @@ function DateFormatFactory() {
     return shortOpt in dtfOptions.dynamic ? {...acc, ...dtfOptions.dynamic[shortOpt](optValue) }
       : optValue in dtfOptions.fixed ? { ...acc, ...dtfOptions.fixed[optValue] } : acc;
   }, dtfOptions.fixed.dl );
+  const dtSimple = (date, xTemplate, moreOptions) => {
+    const opts = getOpts(...moreOptions.split(`,`));
+    const formatted = Intl.DateTimeFormat(opts.locale, opts).format(date);
 
-  return (date, template, moreOptions = `l:default`) => {
-    const xTemplate = extractFromTemplate(template || undefined);
-
-    if(/ds:|ts:/.test(moreOptions) || !template) {
-      const opts = getOpts(...moreOptions.split(`,`));
-      const formatted = Intl.DateTimeFormat(opts.locale, opts).format(date);
-      return xTemplate.finalize(formatted);
-    }
-
+    return xTemplate.finalize(formatted);
+  };
+  const dtFormatted = (date, xTemplate, moreOptions) => {
     const optsCollected = getOpts( ...xTemplate.units.concat(moreOptions.split(`,`)).flat() );
     const dtf = Intl.DateTimeFormat(optsCollected.locale, optsCollected).formatToParts(date)
       .reduce( (parts, v) => ( v.type === `literal` ? parts : {...parts, [v.type]: v.value } ), {} );
@@ -69,5 +69,9 @@ function DateFormatFactory() {
       .replace(dtfOptions.re, dtUnit => dtf[Object.keys(dtfOptions.fixed[dtUnit]).shift()] || dtUnit);
 
     return xTemplate.finalize(``, dtf.dayPeriod, dtf.era);
-  };
+  }
+
+  return (date, template, moreOptions = `l:default`) => (/ds:|ts:/.test(moreOptions) || !template)
+    ? dtSimple(...[date, extractFromTemplate(template || undefined), moreOptions])
+    : dtFormatted(...[date, extractFromTemplate(template || undefined), moreOptions]);
 }
