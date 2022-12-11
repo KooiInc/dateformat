@@ -23,8 +23,8 @@ npm install intl-dateformatter
 import dtFormat from '[location of index.js]';
 // CJS Module import
 const dtFormat = require('[location of dtFormat.js]');
-// if installed via nmp
-const dtFormat = require('int-dateformatter');
+// if installed via npm
+const dtFormat = require('intl-dateformatter');
 ```
 
 ```html
