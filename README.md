@@ -12,12 +12,19 @@ The module is available as ES module import @
 
 For running in the browser or CJS-import use one of the urls with filename **dtFormat.js** instead of index.js.
 
+**install from npm**
+```cmd
+npm install intl-dateformatter
+```
+
 **Loading**
 ```js
 // ES Module import
 import dtFormat from '[location of index.js]';
 // CJS Module import
 const dtFormat = require('[location of dtFormat.js]');
+// if installed via nmp
+const dtFormat = require('int-dateformatter');
 ```
 
 ```html
