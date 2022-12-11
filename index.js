@@ -26,12 +26,16 @@ function DateFormatFactory() {
     },
     dynamic:  {
       tzn: v => ( { timeZoneName: v.slice(4) } ),
+      hrc: v => ( { hourCycle: `h${v.slice(4)}` } ),
       ds:  v => ( { dateStyle: v.slice(3) } ),
       ts:  v => ( { timeStyle: v.slice(3) } ),
-      e:   v => ( { era: v.slice(2) } ),
-      hrc: v => ( { hourCycle: `h${v.slice(4)}` } ),
       tz:  v => ( { timeZone: v.slice(3) } ),
+      e:   v => ( { era: v.slice(2) } ),
       l:   v => ( { locale: v.slice(2) } ),
+    },
+    retrieveDyn(fromValue) {
+      const key = fromValue?.slice(0, fromValue.indexOf(`:`));
+      return this.dynamic[key] && this.dynamic[key](fromValue);
     },
     get re() { return new RegExp(`\\b(${Object.keys(this.fixed).join(`|`)})\\b`, `g`); },
   };
@@ -50,11 +54,9 @@ function DateFormatFactory() {
         .replace(/era/, era)
         .replace(/dp\b/, h12); },
   } );
-  const getOpts = (...opts) => opts?.reduce( (acc, optValue) => {
-    const shortOpt = optValue.slice(0, optValue.indexOf(`:`));
-    return shortOpt in dtfOptions.dynamic ? {...acc, ...dtfOptions.dynamic[shortOpt](optValue) }
-      : optValue in dtfOptions.fixed ? { ...acc, ...dtfOptions.fixed[optValue] } : acc;
-  }, dtfOptions.fixed.dl );
+  const getOpts = (...opts) => opts?.reduce( (acc, optValue) =>
+    ({...acc, ...(dtfOptions.retrieveDyn(optValue) || dtfOptions.fixed[optValue]),}),
+    dtfOptions.fixed.dl );
   const dtSimple = (date, xTemplate, moreOptions) => {
     const opts = getOpts(...moreOptions.split(`,`));
     const formatted = Intl.DateTimeFormat(opts.locale, opts).format(date);
