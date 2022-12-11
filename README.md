@@ -4,19 +4,36 @@ A utility module to format a js Date using [Intl.DateTimeFormat](https://develop
 template (like '`yyyy/mm/dd`').
 
 ### Usage
+The module is available as ES module import @
+- https://kooiinc.github.io/dateformat/index.js
+- https://dateformat.kooi.dev/index.js
+- *minified by cdn.jsdelivr.net from npm*
+  <br>https://cdn.jsdelivr.net/npm/intl-dateformatter@latest/index.min.js
+
+For running in the browser or CJS-import use one of the urls with filename **dtFormat.js** instead of index.js.
+
+**Loading**
 ```js
+// ES Module import
 import dtFormat from '[location of index.js]';
-// the module is available @
-// https://kooiinc.github.io/dateformat/index.js
-// https://dateformat.kooi.dev/index.js
-// **minified by cdn.jsdelivr.net from npm
-// https://cdn.jsdelivr.net/npm/intl-dateformatter@latest/index.min.js
+// CJS Module import
+const dtFormat = require('[location of dtFormat.js]');
+```
+
+```html
+<!-- browser (putting before your own script exposes the function dtFormat for use) -->
+<script src="[location of dtFormat.js]"></script>
+```
+
+**Examples**
+```js
 const englishWeekdayAbbr = dtFormat(new Date, `wd, d MM yyyy hh:mmi dp`, `l:en`);
 // Mon, 5 December 2022 12:13 PM
 const francaisWithText = dtFormat(new Date, `{Voilà} <i>WD</i>, d MM yyyy h{h}:mmi{m}`, `l:fr`);
 // Voilà lundi, 5 décembre 2022 12h:13m
 ```
-See [this small stackblitz project](https://stackblitz.com/edit/web-platform-5wqvwc?file=script.js) for a few examples.
+
+See [this small stackblitz project](https://stackblitz.com/edit/web-platform-5wqvwc?file=script.js) for a more examples.
 
 ### Syntax:
 

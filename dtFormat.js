@@ -1,26 +1,14 @@
-( function( global, factory ) {
-    if ( typeof module === "object" && typeof module.exports === "object" ) {
-      module.exports = global.document ? factory( global, true ) :
-        function( w ) {
-          if ( !w.document ) {
-            throw new Error( "Intl-DateFormatter requires a window with a document" );
-          }
-          return factory( w );
-        };
-    }
+flexLoader(typeof window !== `undefined` && window?.document ? window : this, DateFormatFactory);
 
-    return  factory( global );
-  } ) ( typeof window !== "undefined" ? window : this, loadModule );
-
-function loadModule( window, noGlobal ) {
-  const formatter = DateFormatFactory();
-  if (window.document) {
-    window.dtFormat = formatter;
-    return;
+function flexLoader( global, factory ) {
+  if ( typeof module === "object" && typeof module.exports === "object" ) {
+    return module.exports = factory( global, true );
   }
-  return formatter;
+
+  return factory( global );
 }
-function DateFormatFactory() {
+
+function DateFormatFactory(isGlobal) {
   const dtfOptions = {
     fixed: {
       MM:   { month: `long` },
@@ -92,7 +80,13 @@ function DateFormatFactory() {
     return xTemplate.finalize(``, dtf.dayPeriod, dtf.era);
   }
 
-  return (date, template, moreOptions = `l:default`) => (/ds:|ts:/.test(moreOptions) || !template)
+  const theProduct = (date, template, moreOptions = `l:default`) => (/ds:|ts:/.test(moreOptions) || !template)
     ? dtSimple(...[date, extractFromTemplate(template || undefined), moreOptions])
     : dtFormatted(...[date, extractFromTemplate(template || undefined), moreOptions]);
+
+  if ( typeof isGlobal !== undefined && isGlobal.document ) {
+    window.dtFormat = theProduct;
+  }
+
+  return theProduct;
 }
