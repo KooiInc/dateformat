@@ -10,7 +10,7 @@ The module is available as ES module import @
 - *minified by cdn.jsdelivr.net from npm*
   <br>https://cdn.jsdelivr.net/npm/intl-dateformatter@latest/index.min.js
 
-For running in the browser or CJS-import use one of the urls with filename **dtFormat.js** instead of index.js.
+For running in the browser or CJS-import use one of the urls with filename **index.cjs** instead of index.js.
 
 **install from npm**
 ```cmd
@@ -22,14 +22,14 @@ npm install intl-dateformatter
 // ES Module import
 import dtFormat from '[location of index.js]';
 // CJS Module import
-const dtFormat = require('[location of dtFormat.js]');
+const dtFormat = require('[location of index.cjs]');
 // if installed via npm
 const dtFormat = require('intl-dateformatter');
 ```
 
 ```html
 <!-- browser (putting before your own script exposes the function dtFormat for use) -->
-<script src="[location of dtFormat.js]"></script>
+<script src="[location of index.js]"></script>
 ```
 
 **Examples**

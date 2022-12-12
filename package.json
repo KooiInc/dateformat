@@ -1,6 +1,6 @@
 {
   "name": "intl-dateformatter",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "Localized formatting a js Date using Intl.DateTimeFormat",
   "main": "index.js",
   "scripts": {
@@ -11,10 +11,10 @@
     "url": "git+https://github.com/KooiInc/dateformat.git"
   },
   "exports": {
-    "require": "./dtFormat.js",
     "import": "./index.js",
-    "browser": "./dtFormat.js"
+    "require": "./index.cjs"
   },
+  "type": "module",
   "keywords": [
     "datetime",
     "js",
