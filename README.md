@@ -12,12 +12,12 @@ The module is available as ES module import @
 
 For running in the browser one of the urls with filename **DTFormat.js** instead of index.js.
 
-**install from npm**
+### Install from npm
 ```cmd
 npm install intl-dateformatter
 ```
 
-**Loading**
+## Loading
 ```js
 // ES Module import (index.JS)
 import dtFormat from '[location of index.js]';
@@ -34,20 +34,11 @@ import dtFormat from 'intl-dateformatter';
 <script src="[location of DTFormat.js]"></script>
 ```
 
-**Examples**
-```js
-const englishWeekdayAbbr = dtFormat(new Date, `wd, d MM yyyy hh:mmi dp`, `l:en`);
-// Mon, 5 December 2022 12:13 PM
-const francaisWithText = dtFormat(new Date, `{Voilà} <i>WD</i>, d MM yyyy h{h}:mmi{m}`, `l:fr`);
-// Voilà lundi, 5 décembre 2022 12h:13m
-```
-
+### Examples
 See [this small stackblitz project](https://stackblitz.com/edit/web-platform-5wqvwc?file=script.js) for a more examples.
 
 ### Syntax:
-
 `[imported format function](date, [template], [moreOptions])`
-
 - no `[template]` or `[moreOptions]`: returns date only, formatted to
   current locale/time zone.
 - `date`: a Date Object
