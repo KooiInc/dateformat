@@ -1,4 +1,12 @@
-export default DateFormatFactory();
+flexLoader(typeof window !== `undefined` && window?.document ? window : this, DateFormatFactory);
+
+function flexLoader( global, factory ) {
+  if ( typeof module === "object" && typeof module.exports === "object" ) {
+    return module.exports = factory( global, true );
+  }
+
+  return factory( global );
+}
 
 function DateFormatFactory() {
   const dtfOptions = {
