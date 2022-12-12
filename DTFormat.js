@@ -8,7 +8,7 @@ function flexLoader( global, factory ) {
   return factory( global );
 }
 
-function DateFormatFactory() {
+function DateFormatFactory(isGlobal) {
   const dtfOptions = {
     fixed: {
       MM:   { month: `long` },
@@ -81,7 +81,13 @@ function DateFormatFactory() {
     return xTemplate.finalize(``, dtf.dayPeriod, dtf.era);
   }
 
-  return (date, template, moreOptions = `l:default`) => (/ds:|ts:/.test(moreOptions) || !template)
+  const formatter = (date, template, moreOptions = `l:default`) => (/ds:|ts:/.test(moreOptions) || !template)
     ? dtSimple(...[date, extractFromTemplate(template || undefined), moreOptions])
     : dtFormatted(...[date, extractFromTemplate(template || undefined), moreOptions]);
+
+  if (typeof isGlobal !== "undefined") {
+    window.dtFormat = formatter;
+  }
+
+  return formatter;
 }
