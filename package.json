@@ -1,7 +1,7 @@
 {
   "name": "intl-dateformatter",
-  "version": "1.2.8",
-  "description": "Localized formatting a js Date using Intl.DateTimeFormat",
+  "version": "1.2.9",
+  "description": "Localized formatting a js Date using Intl.DateTimeFormat (WIP)",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

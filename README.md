@@ -31,9 +31,8 @@ import dtFormat from 'intl-dateformatter';
 ```
 
 
-You can use a script tag in html.
-Putting that before your own script exposes the
-function dtFormat for use in your own script.
+You can use a different .js-file: `DTFormat.js` for a script tag in html.<br>
+Putting that tag before your own script exposes the function `dtFormat` for use in your own script.
 
 ```HTML
 <script src="//cdn.jsdelivr.net/npm/intl-dateformatter/DTFormat.js"></script>
