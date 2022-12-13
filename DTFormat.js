@@ -1,14 +1,6 @@
-flexLoader(typeof window !== `undefined` && window?.document ? window : this, DateFormatFactory);
+window.dtFormat = DateFormatFactory();
 
-function flexLoader( global, factory ) {
-  if ( typeof module === "object" && typeof module.exports === "object" ) {
-    return module.exports = factory( global, true );
-  }
-
-  return factory( global );
-}
-
-function DateFormatFactory(isGlobal) {
+function DateFormatFactory() {
   const dtfOptions = {
     fixed: {
       MM:   { month: `long` },
@@ -84,10 +76,6 @@ function DateFormatFactory(isGlobal) {
   const formatter = (date, template, moreOptions = `l:default`) => (/ds:|ts:/.test(moreOptions) || !template)
     ? dtSimple(...[date, extractFromTemplate(template || undefined), moreOptions])
     : dtFormatted(...[date, extractFromTemplate(template || undefined), moreOptions]);
-
-  if (typeof isGlobal !== "undefined") {
-    window.dtFormat = formatter;
-  }
 
   return formatter;
 }
