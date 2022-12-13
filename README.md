@@ -26,7 +26,7 @@ import dtFormat from 'https://cdn.jsdelivr.net/npm/intl-dateformatter/index.js';
 const dtFormat = require('https://cdn.jsdelivr.net/npm/intl-dateformatter/index.cjs');
 // if installed via npm - cjs
 const dtFormat = require('intl-dateformatter');
-// if installed via npm - es ("type"="module" in package.json)
+// if installed via npm - es ("type": "module" in package.json)
 import dtFormat from 'intl-dateformatter';
 ```
 
