@@ -18,7 +18,7 @@ npm install intl-dateformatter
 ```
 
 ## Loading
-Presume location = https://cdn.jsdelivr.net/npm/intl-dateformatter@latest/
+Presume the location is https://cdn.jsdelivr.net/npm/intl-dateformatter@latest/
 ```js
 // ES Module import (index.JS)
 import dtFormat from 'https://cdn.jsdelivr.net/npm/intl-dateformatter/index.js';
@@ -30,12 +30,11 @@ const dtFormat = require('intl-dateformatter');
 import dtFormat from 'intl-dateformatter';
 ```
 
-
-You can use a different .js-file: `DTFormat.js` to use this library in the browser.<br>
+You can use a different .js-file (`DTFormat.js`) to use this library in the browser.<br>
 Putting a script tag before your own script exposes the global function `window.dtFormat`.
 
-```HTML
-<script src="//cdn.jsdelivr.net/npm/intl-dateformatter/DTFormat.js"></script>
+```html
+<script src="//cdn.jsdelivr.net/npm/intl-dateformatter@latest/DTFormat.js"></script>
 ```
 
 ### Examples
