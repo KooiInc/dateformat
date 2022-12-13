@@ -30,7 +30,7 @@ const dtFormat = require('intl-dateformatter');
 import dtFormat from 'intl-dateformatter';
 ```
 
-You can use a different .js-file (`DTFormat.js`) to use this library in the browser.<br>
+For straightforward loading this library in your browser source it to a different .js-file (`DTFormat.js`).<br>
 Putting a script tag before your own script exposes the global function `window.dtFormat`.
 
 ```html
