@@ -24,15 +24,15 @@ Presume location = https://cdn.jsdelivr.net/npm/intl-dateformatter@latest/
 import dtFormat from 'https://cdn.jsdelivr.net/npm/intl-dateformatter/index.js';
 // CJS Module import (index.CJS)
 const dtFormat = require('https://cdn.jsdelivr.net/npm/intl-dateformatter/index.cjs');
-// if installed via npm cjs
+// if installed via npm - cjs
 const dtFormat = require('intl-dateformatter');
-// if installed via npm es
+// if installed via npm - es
 import dtFormat from 'intl-dateformatter';
 ```
 
 
-You can use a different .js-file: `DTFormat.js` for a script tag in html.<br>
-Putting that tag before your own script exposes the function `dtFormat` for use in your own script.
+You can use a different .js-file: `DTFormat.js` to use this library in the browser.<br>
+Putting a script tag before your own script exposes the global function `window.dtFormat`.
 
 ```HTML
 <script src="//cdn.jsdelivr.net/npm/intl-dateformatter/DTFormat.js"></script>
