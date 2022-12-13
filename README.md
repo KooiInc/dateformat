@@ -20,13 +20,19 @@ npm install intl-dateformatter
 ## Loading
 Presume the location is https://cdn.jsdelivr.net/npm/intl-dateformatter@latest/
 ```js
+// ------------------------------
+// Directly
+// ------------------------------
 // ES Module import (index.JS)
 import dtFormat from 'https://cdn.jsdelivr.net/npm/intl-dateformatter/index.js';
 // CJS Module import (index.CJS)
 const dtFormat = require('https://cdn.jsdelivr.net/npm/intl-dateformatter/index.cjs');
-// if installed via npm - cjs
+// ------------------------------
+// when installed via npm
+// ------------------------------
+// CJS import
 const dtFormat = require('intl-dateformatter');
-// if installed via npm - es ("type": "module" in package.json)
+// ES Import ("type": "module" in package.json)
 import dtFormat from 'intl-dateformatter';
 ```
 
