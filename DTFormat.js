@@ -65,11 +65,12 @@ function DateFormatFactory() {
   };
   const dtFormatted = (date, xTemplate, moreOptions) => {
     const optsCollected = getOpts( ...xTemplate.units.concat(moreOptions.split(`,`)).flat() );
+    const fixedOpts = {...dtfOptions.fixed};
     const dtf = Intl.DateTimeFormat(optsCollected.locale, optsCollected).formatToParts(date)
       .reduce( (parts, v) => (v.type === `literal` ? parts : {...parts, [v.type]: v.value } ), {} );
-    dtfOptions.fixed.ms = optsCollected.fractionalSecondDigits ? { fractionalSecond: true } : dtfOptions.fixed.ms;
+    fixedOpts.ms = optsCollected.fractionalSecondDigits ? { fractionalSecond: true } : fixedOpts.ms;
     xTemplate.formatStr = xTemplate.formatStr
-      .replace(dtfOptions.re, dtUnit => (console.log(dtUnit), dtf[Object.keys(dtfOptions.fixed[dtUnit]).shift()] || dtUnit));
+      .replace(dtfOptions.re, dtUnit => (console.log(dtUnit), dtf[Object.keys(fixedOpts[dtUnit]).shift()] || dtUnit));
 
     return xTemplate.finalize(``, dtf.dayPeriod, dtf.era);
   }
