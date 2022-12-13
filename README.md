@@ -23,12 +23,14 @@ Presume the location is https://cdn.jsdelivr.net/npm/intl-dateformatter@latest/
 // ------------------------------
 // Directly
 // ------------------------------
-// ES Module import (index.JS)
+// ES Module import (index.JS, script type="module")
 import dtFormat from 'https://cdn.jsdelivr.net/npm/intl-dateformatter/index.js';
-// CJS Module import (index.CJS)
-const dtFormat = require('https://cdn.jsdelivr.net/npm/intl-dateformatter/index.cjs');
+// ES Module ("type": "module" in package.json)
+import dtFormat from '[location of index.JS]';
+// CJS require
+const dtFormat = require(`[location of index.CJS]`);
 // ------------------------------
-// when installed via npm
+// installed with npm
 // ------------------------------
 // CJS import
 const dtFormat = require('intl-dateformatter');
