@@ -44,7 +44,7 @@ Putting a script tag before your own script exposes the global function `window.
 ```
 
 ### Examples
-See [this small stackblitz project](https://stackblitz.com/edit/web-platform-5wqvwc?file=script.js) for a more examples.
+See [this small stackblitz project](https://stackblitz.com/edit/web-platform-5wqvwc?file=script.js) for examples.
 
 ### Syntax:
 `[imported format function](date, [template], [moreOptions])`
