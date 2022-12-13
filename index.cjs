@@ -77,7 +77,7 @@ function DateFormatFactory(isGlobal) {
       .reduce( (parts, v) => (v.type === `literal` ? parts : {...parts, [v.type]: v.value } ), {} );
     fixedOpts.ms = optsCollected.fractionalSecondDigits ? { fractionalSecond: true } : fixedOpts.ms;
     xTemplate.formatStr = xTemplate.formatStr
-      .replace(dtfOptions.re, dtUnit => (console.log(dtUnit), dtf[Object.keys(fixedOpts[dtUnit]).shift()] || dtUnit));
+      .replace(dtfOptions.re, dtUnit => dtf[Object.keys(fixedOpts[dtUnit]).shift()] || dtUnit);
 
     return xTemplate.finalize(``, dtf.dayPeriod, dtf.era);
   }
