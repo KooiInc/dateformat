@@ -8,7 +8,7 @@ function flexLoader( global, factory ) {
   return factory( global );
 }
 
-function DateFormatFactory(isGlobal) {
+function DateFormatFactory() {
   const dtfOptions = {
     fixed: {
       MM:   { month: `long` },
@@ -41,6 +41,10 @@ function DateFormatFactory(isGlobal) {
       e:   v => ( { era: v.slice(2) } ),
       l:   v => ( { locale: v.slice(2) } ),
     },
+    retrieveDyn(fromValue) {
+      const key = fromValue?.slice(0, fromValue.indexOf(`:`));
+      return this.dynamic[key] && this.dynamic[key](fromValue);
+    },
     get re() { return new RegExp(`\\b(${Object.keys(this.fixed).join(`|`)})\\b`, `g`); },
   };
   const extractFromTemplate = (rawTemplateString = `dtf`, plainTextIndex = 0) => ( {
@@ -53,25 +57,24 @@ function DateFormatFactory(isGlobal) {
     finalize(dtf = ``, h12 = ``, era = ``) {
       return this.formatStr
         .replace(/~(\d+?)/g, `$1`)
-        .replace(/\[(\d+?)]/g, (_, d) => this.texts[d].trim())
         .replace(/dtf/, dtf)
         .replace(/era/, era)
-        .replace(/dp\b/, h12); },
+        .replace(/dp\b/, h12)
+        .replace(/\[(\d+?)]/g, (_, d) => this.texts[d].trim()); },
   } );
-  const getOpts = (...opts) => opts?.reduce( (acc, optValue) => {
-    const shortOpt = optValue.slice(0, optValue.indexOf(`:`));
-    return {...acc, ...(dtfOptions.dynamic[shortOpt] &&
-        dtfOptions.dynamic[shortOpt](optValue) ||
-        dtfOptions.fixed[optValue]), };
-  }, dtfOptions.fixed.dl );
+  const unSpace = str => str.replace(/\s+/g, ``);
+  const getOpts = (...opts) => opts?.reduce( (acc, optValue) =>
+      ({...acc, ...(dtfOptions.retrieveDyn(optValue) || dtfOptions.fixed[optValue]),}),
+    dtfOptions.fixed.dl );
   const dtSimple = (date, xTemplate, moreOptions) => {
-    const opts = getOpts(...moreOptions.split(`,`));
+    const opts = getOpts(...unSpace(moreOptions).split(`,`));
+    console.log(opts);
     const formatted = Intl.DateTimeFormat(opts.locale, opts).format(date);
 
     return xTemplate.finalize(formatted);
   };
   const dtFormatted = (date, xTemplate, moreOptions) => {
-    const optsCollected = getOpts( ...xTemplate.units.concat(moreOptions.split(`,`)).flat() );
+    const optsCollected = getOpts( ...xTemplate.units.concat(unSpace(moreOptions).split(`,`)).flat() );
     const fixedOpts = {...dtfOptions.fixed};
     const dtf = Intl.DateTimeFormat(optsCollected.locale, optsCollected).formatToParts(date)
       .reduce( (parts, v) => (v.type === `literal` ? parts : {...parts, [v.type]: v.value } ), {} );
@@ -81,13 +84,8 @@ function DateFormatFactory(isGlobal) {
 
     return xTemplate.finalize(``, dtf.dayPeriod, dtf.era);
   }
-  const theProduct = (date, template, moreOptions = `l:default`) => (/ds:|ts:/.test(moreOptions) || !template)
+
+  return (date, template, moreOptions = `l:default`) => (/ds:|ts:/.test(moreOptions) || !template)
     ? dtSimple(...[date, extractFromTemplate(template || undefined), moreOptions])
     : dtFormatted(...[date, extractFromTemplate(template || undefined), moreOptions]);
-
-  if ( typeof isGlobal !== undefined && isGlobal.document ) {
-    window.dtFormat = theProduct;
-  }
-
-  return theProduct;
 }

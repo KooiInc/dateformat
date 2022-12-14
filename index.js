@@ -49,22 +49,24 @@ function DateFormatFactory() {
     finalize(dtf = ``, h12 = ``, era = ``) {
       return this.formatStr
         .replace(/~(\d+?)/g, `$1`)
-        .replace(/\[(\d+?)]/g, (_, d) => this.texts[d].trim())
         .replace(/dtf/, dtf)
         .replace(/era/, era)
-        .replace(/dp\b/, h12); },
+        .replace(/dp\b/, h12)
+        .replace(/\[(\d+?)]/g, (_, d) => this.texts[d].trim()); },
   } );
+  const unSpace = str => str.replace(/\s+/g, ``);
   const getOpts = (...opts) => opts?.reduce( (acc, optValue) =>
-    ({...acc, ...(dtfOptions.retrieveDyn(optValue) || dtfOptions.fixed[optValue]),}),
+      ({...acc, ...(dtfOptions.retrieveDyn(optValue) || dtfOptions.fixed[optValue]),}),
     dtfOptions.fixed.dl );
   const dtSimple = (date, xTemplate, moreOptions) => {
-    const opts = getOpts(...moreOptions.split(`,`));
+    const opts = getOpts(...unSpace(moreOptions).split(`,`));
+    console.log(opts);
     const formatted = Intl.DateTimeFormat(opts.locale, opts).format(date);
 
     return xTemplate.finalize(formatted);
   };
   const dtFormatted = (date, xTemplate, moreOptions) => {
-    const optsCollected = getOpts( ...xTemplate.units.concat(moreOptions.split(`,`)).flat() );
+    const optsCollected = getOpts( ...xTemplate.units.concat(unSpace(moreOptions).split(`,`)).flat() );
     const fixedOpts = {...dtfOptions.fixed};
     const dtf = Intl.DateTimeFormat(optsCollected.locale, optsCollected).formatToParts(date)
       .reduce( (parts, v) => (v.type === `literal` ? parts : {...parts, [v.type]: v.value } ), {} );
