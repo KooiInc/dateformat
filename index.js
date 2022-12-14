@@ -60,7 +60,6 @@ function DateFormatFactory() {
     dtfOptions.fixed.dl );
   const dtSimple = (date, xTemplate, moreOptions) => {
     const opts = getOpts(...unSpacify(moreOptions).split(`,`));
-    console.log(opts);
     const formatted = Intl.DateTimeFormat(opts.locale, opts).format(date);
 
     return xTemplate.finalize(formatted);
