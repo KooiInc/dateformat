@@ -67,8 +67,8 @@ See [this small stackblitz project](https://stackblitz.com/edit/web-platform-5wq
       - **Note**: dateStyle can be used with timeStyle and vice versa, but *not* with other options (e.g. weekday, hour, month, etc.), so these are ignored (in other words: you can't use them in your template: only '`dtf`' in a template will actually give you a formatted date cf the date-/timestyle you supplied).
     - `e:[long|short|narrow]` the (locale specific) era representation (e.g. `l:en,e:long`: *era* in the template string is replaced with 'Anno Domini').
     - `h12` use 12 hour clock.
-        - **Note**: in case of a 12 hour clock *OR* a locale using a 12 hour clock, `dp` in the template will give you
     - `hrc:[11|12|23|24]` The hour cycle to use.
+       - **Note**: in case of a 12 hour clock (`h12` or `hrc:11/12`) *OR* a locale using a 12 hour clock, `dp` in the template will be replace by the (locale specific) day period.
  
   Spaces are allowed in the `moreOptions` string, e.g. `l: en, tz: Asia / Shanghai, e:long`.  
 
