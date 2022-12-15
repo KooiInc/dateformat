@@ -80,4 +80,4 @@ function DateFormatFactory() {
     ? dtSimple(...[date, extractFromTemplate(template || undefined), moreOptions])
     : dtFormatted(...[date, extractFromTemplate(template || undefined), moreOptions]);
 }
-// Sync  20221214T083825 UTC 
+// Sync  20221215T075433 UTC 

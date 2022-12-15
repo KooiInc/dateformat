@@ -68,7 +68,6 @@ function DateFormatFactory() {
     dtfOptions.fixed.dl );
   const dtSimple = (date, xTemplate, moreOptions) => {
     const opts = getOpts(...unSpacify(moreOptions).split(`,`));
-    console.log(opts);
     const formatted = Intl.DateTimeFormat(opts.locale, opts).format(date);
 
     return xTemplate.finalize(formatted);
@@ -89,4 +88,4 @@ function DateFormatFactory() {
     ? dtSimple(...[date, extractFromTemplate(template || undefined), moreOptions])
     : dtFormatted(...[date, extractFromTemplate(template || undefined), moreOptions]);
 }
-// Sync  20221214T083825 UTC 
+// Sync  20221215T075433 UTC 
