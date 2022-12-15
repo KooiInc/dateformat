@@ -64,7 +64,8 @@ function DateFormatFactory() {
         .replace(/era/, era)
         .replace(/dp\b/, h12)
         .replace(/yn\b/, yn)
-        .replace(/\[(\d+?)]/g, (_, d) => this.texts[d].trim()); }, } );
+        .replace(/\[(\d+?)]/g, (_, d) => this.texts[d].trim())
+        .trim(); }, } );
   const unSpacify = str => str.replace(/\s+/g, ``);
   const getOpts = (...opts) => opts?.reduce( (acc, optValue) =>
       ({...acc, ...(dtfOptions.retrieveDyn(optValue) || dtfOptions.fixed[optValue]),}),
@@ -92,4 +93,4 @@ function DateFormatFactory() {
     ? dtNoParts(...[date, extractFromTemplate(template || undefined), moreOptions])
     : dtFormatted(...[date, extractFromTemplate(template || undefined), moreOptions]);
 }
-// Sync  20221215T102856 UTC 
+// Sync 20221215T124145 UTC
