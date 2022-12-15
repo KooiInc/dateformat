@@ -90,3 +90,6 @@ See [this small stackblitz project](https://stackblitz.com/edit/web-platform-5wq
 - `s`: Second number (0 - 59)
 - `ss`: Second number (00 - 59)
 - `ms`: milliseconds number (0 - 999),
+- `tz`: the time zone (e.g. 'GMT+1')
+   - **Note** the way time zone is displayed depends on the time zone name given (see `tzn:` in [syntax](#Syntax)) 
+     
