@@ -31,6 +31,9 @@ function DateFormatFactory() {
       tz:   { timeZoneName: `shortOffset` },
       dl:   { locale: `default` },
       h12:  { hour12: true },
+      yn:   { yearName: `` },
+      ry:   { relatedYear: true },
+      msp:  { fractionalSecond: true},
     },
     dynamic:  {
       tzn: v => ( { timeZoneName: v.slice(4) } ),
@@ -54,19 +57,19 @@ function DateFormatFactory() {
       .replace(/[{}]/g, ``)
       .trim()} `,
     get units() { return this.formatStr.match(dtfOptions.re) || []; },
-    finalize(dtf = ``, h12 = ``, era = ``) {
+    finalize(dtf = ``, h12 = ``, era = ``, yn = ``) {
       return this.formatStr
         .replace(/~(\d+?)/g, `$1`)
         .replace(/dtf/, dtf)
         .replace(/era/, era)
         .replace(/dp\b/, h12)
-        .replace(/\[(\d+?)]/g, (_, d) => this.texts[d].trim()); },
-  } );
+        .replace(/yn\b/, yn)
+        .replace(/\[(\d+?)]/g, (_, d) => this.texts[d].trim()); }, } );
   const unSpacify = str => str.replace(/\s+/g, ``);
   const getOpts = (...opts) => opts?.reduce( (acc, optValue) =>
       ({...acc, ...(dtfOptions.retrieveDyn(optValue) || dtfOptions.fixed[optValue]),}),
     dtfOptions.fixed.dl );
-  const dtSimple = (date, xTemplate, moreOptions) => {
+  const dtNoParts = (date, xTemplate, moreOptions) => {
     const opts = getOpts(...unSpacify(moreOptions).split(`,`));
     const formatted = Intl.DateTimeFormat(opts.locale, opts).format(date);
 
@@ -74,18 +77,19 @@ function DateFormatFactory() {
   };
   const dtFormatted = (date, xTemplate, moreOptions) => {
     const optsCollected = getOpts( ...xTemplate.units.concat(unSpacify(moreOptions).split(`,`)).flat() );
-    const fixedOpts = {...dtfOptions.fixed};
+    const opts = {...dtfOptions.fixed};
     const dtf = Intl.DateTimeFormat(optsCollected.locale, optsCollected).formatToParts(date)
       .reduce( (parts, v) => (v.type === `literal` ? parts : {...parts, [v.type]: v.value } ), {} );
-    fixedOpts.ms = optsCollected.fractionalSecondDigits ? { fractionalSecond: true } : fixedOpts.ms;
+    opts.ms = optsCollected.fractionalSecondDigits ? opts.msp : opts.ms;
+    opts.yyyy = dtf.relatedYear ? opts.ry : opts.yyyy;
     xTemplate.formatStr = xTemplate.formatStr
-      .replace(dtfOptions.re, dtUnit => dtf[Object.keys(fixedOpts[dtUnit]).shift()] || dtUnit);
+      .replace(dtfOptions.re, dtUnit => dtf[Object.keys(opts[dtUnit]).shift()] || dtUnit);
 
-    return xTemplate.finalize(``, dtf.dayPeriod, dtf.era);
+    return xTemplate.finalize(``, dtf.dayPeriod, dtf.era, dtf.yearName);
   }
 
   return (date, template, moreOptions = `l:default`) => (/ds:|ts:/.test(moreOptions) || !template)
-    ? dtSimple(...[date, extractFromTemplate(template || undefined), moreOptions])
+    ? dtNoParts(...[date, extractFromTemplate(template || undefined), moreOptions])
     : dtFormatted(...[date, extractFromTemplate(template || undefined), moreOptions]);
 }
-// Sync  20221215T075433 UTC 
+// Sync  20221215T102856 UTC 
