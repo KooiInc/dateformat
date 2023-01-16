@@ -2,63 +2,74 @@ window.dtFormat = DateFormatFactory();
 
 function DateFormatFactory() {
   const [digits, numeric, long, short] = [`2-digit`, `numeric`, `long`, `short`];
-  const dtfOptions = {
+  const theOptions = {
     fixed: {
-      MM:   { month: long },
-      M:    { month: short },
-      m:    { month: numeric },
-      mm:   { month: digits },
-      yyyy: { year: numeric },
-      yy:   { year: digits },
-      WD:   { weekday: long },
-      wd:   { weekday: short },
-      d:    { day: numeric },
-      dd:   { day: digits },
-      h:    { hour: numeric },
-      hh:   { hour: digits },
-      mi:   { minute: numeric },
-      mmi:  { minute: digits },
-      s:    { second: numeric },
-      ss:   { second: digits },
-      ms:   { fractionalSecondDigits: 3 },
-      tz:   { timeZoneName: `shortOffset` },
-      dl:   { locale: `default` },
-      h12:  { hour12: true },
-      yn:   { yearName: `` },
-      ry:   { relatedYear: true },
-      msp:  { fractionalSecond: true},
+      MM: {month: long},
+      M: {month: short},
+      m: {month: numeric},
+      mm: {month: digits},
+      yyyy: {year: numeric},
+      yy: {year: digits},
+      WD: {weekday: long},
+      wd: {weekday: short},
+      d: {day: numeric},
+      dd: {day: digits},
+      h: {hour: numeric},
+      hh: {hour: digits},
+      mi: {minute: numeric},
+      mmi: {minute: digits},
+      s: {second: numeric},
+      ss: {second: digits},
+      ms: {fractionalSecondDigits: 3},
+      tz: {timeZoneName: `shortOffset`},
+      dl: {locale: `default`},
+      h12: {hour12: true},
+      yn: {yearName: ``},
+      ry: {relatedYear: true},
+      msp: {fractionalSecond: true},
     },
     dynamic: {
-      tzn: v => ( { timeZoneName: v.slice(4) } ),
-      hrc: v => ( { hourCycle: `h${v.slice(4)}` } ),
-      ds:  v => ( { dateStyle: v.slice(3) } ),
-      ts:  v => ( { timeStyle: v.slice(3) } ),
-      tz:  v => ( { timeZone: v.slice(3) } ),
-      e:   v => ( { era: v.slice(2) } ),
-      l:   v => ( { locale: v.slice(2) } ),
+      tzn: v => ({timeZoneName: v.slice(4)}),
+      hrc: v => ({hourCycle: `h${v.slice(4)}`}),
+      ds: v => ({dateStyle: v.slice(3)}),
+      ts: v => ({timeStyle: v.slice(3)}),
+      tz: v => ({timeZone: v.slice(3)}),
+      e: v => ({era: v.slice(2)}),
+      l: v => ({locale: v.slice(2)}),
     },
+  }
+  const dtfOptions = {
+    ...theOptions,
     retrieveDyn(fromValue) {
       const key = fromValue?.slice(0, fromValue.indexOf(`:`));
-      return this.dynamic[key] && this.dynamic[key](fromValue);
+      return theOptions.dynamic[key] && theOptions.dynamic[key](fromValue);
     },
-    get re() { return new RegExp(`\\b(${Object.keys(this.fixed).join(`|`)})\\b`, `g`); },
+    get re() { return new RegExp(`\\b(${Object.keys(theOptions.fixed).join(`|`)})\\b`, `g`); },
   };
-  const extractFromTemplate = (rawTemplateString = `dtf`, plainTextIndex = 0) => ( {
-    texts: rawTemplateString.match(/(?<=\{)(.+?)(?=})/g) || [],
-    formatStr: ` ${ rawTemplateString
-      .replace(/(?<=\{)(.+?)(?=})/g, _ => `[${plainTextIndex++}]`)
-      .replace(/[{}]/g, ``)
-      .trim()} `,
-    get units() { return this.formatStr.match(dtfOptions.re) || []; },
-    finalize(dtf = ``, h12 = ``, era = ``, yn = ``) {
-      return this.formatStr
-        .replace(/~(\d+?)/g, `$1`)
-        .replace(/dtf/, dtf)
-        .replace(/era/, era)
-        .replace(/dp\b/, h12)
-        .replace(/yn\b/, yn)
-        .replace(/\[(\d+?)]/g, (_, d) => this.texts[d].trim())
-        .trim(); }, } );
+  const extractFromTemplate = (rawTemplateString = `dtf`, plainTextIndex = 0) => {
+    let formatStr = ` ${ 
+      rawTemplateString
+        .replace(/(?<=\{)(.+?)(?=})/g, _ => `[${plainTextIndex++}]`)
+        .replace(/[{}]/g, ``)
+        .trim() } `;
+    let texts = rawTemplateString.match(/(?<=\{)(.+?)(?=})/g) || [];
+    return {
+      get texts() { return texts; },
+      formatString(v) { formatStr = v; },
+      get formatStr() { return formatStr; },
+      get units() { return formatStr.match(dtfOptions.re) || []; },
+      finalize(dtf = ``, h12 = ``, era = ``, yn = ``) {
+        return formatStr
+          .replace(/~(\d+?)/g, `$1`)
+          .replace(/dtf/, dtf)
+          .replace(/era/, era)
+          .replace(/dp\b/, h12)
+          .replace(/yn\b/, yn)
+          .replace(/\[(\d+?)]/g, (_, d) => texts[d].trim())
+          .trim();
+        }
+    };
+  };
   const unSpacify = str => str.replace(/\s+/g, ``);
   const getOpts = (...opts) => opts?.reduce( (acc, optValue) =>
       ({...acc, ...(dtfOptions.retrieveDyn(optValue) || dtfOptions.fixed[optValue]),}),
@@ -66,7 +77,6 @@ function DateFormatFactory() {
   const dtNoParts = (date, xTemplate, moreOptions) => {
     const opts = getOpts(...unSpacify(moreOptions).split(`,`));
     const formatted = Intl.DateTimeFormat(opts.locale, opts).format(date);
-
     return xTemplate.finalize(formatted);
   };
   const dtFormatted = (date, xTemplate, moreOptions) => {
@@ -76,14 +86,14 @@ function DateFormatFactory() {
       .reduce( (parts, v) => (v.type === `literal` ? parts : {...parts, [v.type]: v.value } ), {} );
     opts.ms = optsCollected.fractionalSecondDigits ? opts.msp : opts.ms;
     opts.yyyy = dtf.relatedYear ? opts.ry : opts.yyyy;
-    xTemplate.formatStr = xTemplate.formatStr
-      .replace(dtfOptions.re, dtUnit => dtf[Object.keys(opts[dtUnit]).shift()] || dtUnit);
+    xTemplate.formatString( xTemplate.formatStr
+      .replace(dtfOptions.re, dtUnit => dtf[Object.keys(opts[dtUnit]).shift()] || dtUnit) );
 
     return xTemplate.finalize(``, dtf.dayPeriod, dtf.era, dtf.yearName);
   }
 
   return (date, template, moreOptions = `l:default`) => (/ds:|ts:/.test(moreOptions) || !template)
-    ? dtNoParts(...[date, extractFromTemplate(template || undefined), moreOptions])
+    ? dtNoParts(...[date, extractFromTemplate(undefined), moreOptions])
     : dtFormatted(...[date, extractFromTemplate(template || undefined), moreOptions]);
 }
-// Sync 20230116T110629 UTC
+// Sync 20230116T142704 UTC
