@@ -11,6 +11,9 @@
     "type": "git",
     "url": "git+https://github.com/KooiInc/dateformat.git"
   },
+  "scripts": {
+    "test": "node Tests.js"
+  },
   "exports": {
     "import": "./index.js",
     "require": "./index.cjs",
