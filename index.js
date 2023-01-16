@@ -1,24 +1,25 @@
 export default DateFormatFactory();
 
 function DateFormatFactory() {
+  const [digits, numeric, long, short] = [`2-digit`, `numeric`, `long`, `short`];
   const dtfOptions = {
     fixed: {
-      MM:   { month: `long` },
-      M:    { month: `short` },
-      m:    { month: `numeric` },
-      mm:   { month: `2-digit` },
-      yyyy: { year: `numeric` },
-      yy:   { year: `2-digit` },
-      WD:   { weekday: `long` },
-      wd:   { weekday: `short` },
-      d:    { day: `numeric` },
-      dd:   { day: `2-digit` },
-      h:    { hour: `numeric` },
-      hh:   { hour: `2-digit` },
-      mi:   { minute: `numeric` },
-      mmi:  { minute: `2-digit` },
-      s:    { second: `numeric` },
-      ss:   { second: `2-digit` },
+      MM:   { month: long },
+      M:    { month: short },
+      m:    { month: numeric },
+      mm:   { month: digits },
+      yyyy: { year: numeric },
+      yy:   { year: digits },
+      WD:   { weekday: long },
+      wd:   { weekday: short },
+      d:    { day: numeric },
+      dd:   { day: digits },
+      h:    { hour: numeric },
+      hh:   { hour: digits },
+      mi:   { minute: numeric },
+      mmi:  { minute: digits },
+      s:    { second: numeric },
+      ss:   { second: digits },
       ms:   { fractionalSecondDigits: 3 },
       tz:   { timeZoneName: `shortOffset` },
       dl:   { locale: `default` },
@@ -27,7 +28,7 @@ function DateFormatFactory() {
       ry:   { relatedYear: true },
       msp:  { fractionalSecond: true},
     },
-    dynamic:  {
+    dynamic: {
       tzn: v => ( { timeZoneName: v.slice(4) } ),
       hrc: v => ( { hourCycle: `h${v.slice(4)}` } ),
       ds:  v => ( { dateStyle: v.slice(3) } ),
@@ -85,4 +86,4 @@ function DateFormatFactory() {
     ? dtNoParts(...[date, extractFromTemplate(template || undefined), moreOptions])
     : dtFormatted(...[date, extractFromTemplate(template || undefined), moreOptions]);
 }
-// Sync 20221215T124145 UTC
+// Sync 20230116T110629 UTC
