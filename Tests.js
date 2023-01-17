@@ -83,9 +83,9 @@ function runTests() {
   try {
     workingDate = new Date(1997, 3, 24, 1, 30);
     log(`workingDate: ${dtFormat(workingDate, `yyyy/mm/dd hh:mmi:ss.ms`)}`);
-    const params = [`{BJ} WD, d MM yyyy, h horas mmi`, `l:pt`];
+    const params = [`{BJ} WD, d MM yyyy, h horas mmi tz`, `l:pt,tzn:long,tz:Europe/Lisbon`];
     const formatted = dtFormat(workingDate, ...params);
-    const expected = `BJ quinta-feira, 24 abril 1997, 1 horas 30`;
+    const expected = `BJ quinta-feira, 24 abril 1997, 00 horas 30 Horário de Verão da Europa Ocidental`;
     log(`parameters "${params.join( `" | "`)}"`, `expected: ${expected}`, `received: ${formatted}`);
     assert.strictEqual( formatted, expected );
     log(` => OK!`, `---`);
@@ -97,9 +97,9 @@ function runTests() {
   try {
     workingDate = new Date(1957, 2, 18, 13, 30);
     log(`workingDate: ${dtFormat(workingDate, `yyyy/mm/dd hh:mmi:ss.ms`)}`);
-    const params = [`WD d MM yyyy h:mi (tz)`, `l:ID,tz:Asia/Jayapura,tzn:long`];
+    const params = [`WD d MM yyyy h:mi (tz)`, `l:ID,tz:Asia/Jayapura,tzn:short`];
     const formatted = dtFormat(workingDate, ...params);
-    const expected = `Senin 18 Maret 1957 22:00 (GMT+09.30)`;
+    const expected = `Senin 18 Maret 1957 22:00 (GMT+9.30)`;
     log(`parameters "${params.join( `" | "`)}"`, `expected: ${expected}`, `received: ${formatted}`);
     assert.strictEqual( formatted, expected );
     log(` => OK!`, `---`);
