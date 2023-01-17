@@ -55,8 +55,7 @@ function DateFormatFactory() {
     get re() { return new RegExp(`\\b(${Object.keys(theOptions.fixed).join(`|`)})\\b`, `g`); },
   };
   const extractFromTemplate = (rawTemplateString = `dtf`, plainTextIndex = 0) => {
-    let formatStr = ` ${ 
-      rawTemplateString
+    let formatStr = ` ${ rawTemplateString
         .replace(/(?<=\{)(.+?)(?=})/g, _ => `[${plainTextIndex++}]`)
         .replace(/[{}]/g, ``)
         .trim() } `;
@@ -64,6 +63,7 @@ function DateFormatFactory() {
     return {
       get texts() { return texts; },
       formatString(v) { formatStr = v; },
+      set formatStr(v) { formatStr = v; },
       get formatStr() { return formatStr; },
       get units() { return formatStr.match(dtfOptions.re) || []; },
       finalize(dtf = ``, h12 = ``, era = ``, yn = ``) {
@@ -94,8 +94,8 @@ function DateFormatFactory() {
       .reduce( (parts, v) => (v.type === `literal` ? parts : {...parts, [v.type]: v.value } ), {} );
     opts.ms = optsCollected.fractionalSecondDigits ? opts.msp : opts.ms;
     opts.yyyy = dtf.relatedYear ? opts.ry : opts.yyyy;
-    xTemplate.formatString( xTemplate.formatStr
-      .replace(dtfOptions.re, dtUnit => dtf[Object.keys(opts[dtUnit]).shift()] || dtUnit) );
+    xTemplate.formatStr = xTemplate.formatStr
+      .replace(dtfOptions.re, dtUnit => dtf[Object.keys(opts[dtUnit]).shift()] || dtUnit);
 
     return xTemplate.finalize(``, dtf.dayPeriod, dtf.era, dtf.yearName);
   }
@@ -104,4 +104,3 @@ function DateFormatFactory() {
     ? dtNoParts(...[date, extractFromTemplate(undefined), moreOptions])
     : dtFormatted(...[date, extractFromTemplate(template || undefined), moreOptions]);
 }
-// Sync 20230116T142704 UTC
