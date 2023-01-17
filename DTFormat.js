@@ -51,7 +51,7 @@ function DateFormatFactory() {
         .replace(/(?<=\{)(.+?)(?=})/g, _ => `[${plainTextIndex++}]`)
         .replace(/[{}]/g, ``)
         .trim() } `;
-    let texts = rawTemplateString.match(/(?<=\{)(.+?)(?=})/g) || [];
+    const texts = rawTemplateString.match(/(?<=\{)(.+?)(?=})/g) || [];
     return {
       get texts() { return texts; },
       formatString(v) { formatStr = v; },
