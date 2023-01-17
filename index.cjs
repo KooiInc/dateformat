@@ -97,10 +97,10 @@ function DateFormatFactory() {
     xTemplate.formatStr = xTemplate.formatStr
       .replace(dtfOptions.re, dtUnit => dtf[Object.keys(opts[dtUnit]).shift()] || dtUnit);
 
-    return xTemplate.finalize(``, dtf.dayPeriod, dtf.era, dtf.yearName);
+    return xTemplate.finalize(...[,dtf.dayPeriod, dtf.era, dtf.yearName]);
   }
 
-  return (date, template, moreOptions = `l:default`) => (/ds:|ts:/.test(moreOptions) || !template)
+  return (date, template, moreOptions = `l:default`) => (/ds:|ts:/.test(moreOptions))
     ? dtNoParts(...[date, extractFromTemplate(undefined), moreOptions])
     : dtFormatted(...[date, extractFromTemplate(template || undefined), moreOptions]);
 }
