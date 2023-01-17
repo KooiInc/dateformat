@@ -73,7 +73,7 @@ function DateFormatFactory() {
   const unSpacify = str => str.replace(/\s+/g, ``);
   const getOpts = (...opts) => opts?.reduce( (acc, optValue) =>
       ({...acc, ...(dtfOptions.retrieveDyn(optValue) || dtfOptions.fixed[optValue]),}),
-    dtfOptions.fixed.dl );
+       dtfOptions.fixed.dl );
   const dtNoParts = (date, xTemplate, moreOptions) => {
     const opts = getOpts(...unSpacify(moreOptions).split(`,`));
     const formatted = Intl.DateTimeFormat(opts.locale, opts).format(date);
