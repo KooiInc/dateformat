@@ -1,6 +1,6 @@
 {
   "name": "intl-dateformatter",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Localized formatting a js Date using Intl.DateTimeFormat (WIP)",
   "jsdelivr": "index.js",
   "main": "index.js",
