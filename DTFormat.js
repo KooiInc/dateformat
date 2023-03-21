@@ -82,8 +82,13 @@ function DateFormatFactory() {
   const dtFormatted = (date, xTemplate, moreOptions) => {
     const optsCollected = getOpts( ...xTemplate.units.concat(unSpacify(moreOptions).split(`,`)).flat() );
     const opts = {...dtfOptions.fixed};
-    const dtf = Intl.DateTimeFormat(optsCollected.locale, optsCollected).formatToParts(date)
-      .reduce( (parts, v) => (v.type === `literal` ? parts : {...parts, [v.type]: v.value } ), {} );
+    // note: numeric is locale independent
+    const checkNumeric = (type, value) => optsCollected[type] === `numeric` && value.startsWith(`0`)
+      ? value.slice(1) : value;
+    const dtf = Intl.DateTimeFormat(optsCollected.locale, optsCollected)
+      .formatToParts(date)
+      .reduce( (parts, v) =>
+          (v.type === `literal` ? parts : {...parts, [v.type]: checkNumeric(v.type, v.value) } ), {} );
     opts.ms = optsCollected.fractionalSecondDigits ? opts.msp : opts.ms;
     opts.yyyy = dtf.relatedYear ? opts.ry : opts.yyyy;
     xTemplate.formatStr = xTemplate.formatStr

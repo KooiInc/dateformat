@@ -82,6 +82,7 @@ function DateFormatFactory() {
   const dtFormatted = (date, xTemplate, moreOptions) => {
     const optsCollected = getOpts( ...xTemplate.units.concat(unSpacify(moreOptions).split(`,`)).flat() );
     const opts = {...dtfOptions.fixed};
+    // note: numeric is locale independent
     const checkNumeric = (type, value) => optsCollected[type] === `numeric` && value.startsWith(`0`)
       ? value.slice(1) : value;
     const dtf = Intl.DateTimeFormat(optsCollected.locale, optsCollected)
