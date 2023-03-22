@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import dtFormat from "./index.js";
-
+console.clear();
 runTests();
 
 function runTests() {
@@ -8,13 +8,13 @@ function runTests() {
   const logs = [];
   const getLine = err => `\n   @line ${err.stack.split(`\n`)[1].split(`:`).slice(-2, -1).shift()}\n`;
   const log = (...strs) => strs.forEach(str => logs.push(`  ${str.replace(/\n/, `\n  `)}`));
-  const isOk = () => log(`Test OK!`,  `---`);
+  const isOk = () => log(`Test OK!`,  `\n---`);
   const doTest = (workingDate, params, expected, start) => {
     try {
-      start && log(`---`);
+      start && log(`\n---`);
       log(`workingDate: ${dtFormat(workingDate, `yyyy/mm/dd hh:mmi:ss.ms`)}`);
       const formatted = dtFormat(workingDate, ...params);
-      log(`parameters "${params.join(`" | "`)}"`, `expected: ${expected}`, `received: ${formatted}`);
+      log(`parameters: "${params.join(`",  "`)}"`, `expected: ${expected}`, `received: ${formatted}`);
       assert.strictEqual( formatted, expected );
       isOk();
     } catch(err) {
