@@ -41,9 +41,9 @@ function runTests() {
       expected: `AJ Thursday, October 6th 1994 Anno Domini at 12 hour 30` },
     { workingDate: new Date(1997, 3, 24, 1, 30),
       params: [`{BJ} WD, d MM yyyy, h horas mmi tz`, `l:pt,tzn:long,tz:Europe/Lisbon`],
-      expected: `BJ quinta-feira, 24 abril 1997, 00 horas 30 Horário de Verão da Europa Ocidental` },
+      expected: `BJ quinta-feira, 24 abril 1997, 0 horas 30 Horário de Verão da Europa Ocidental` },
     { workingDate: new Date(1957, 2, 18, 13, 30),
-      params: [`WD d MM yyyy h:mi (tz)`, `l:ID,tz:Asia/Jayapura,tzn:short`],
+      params: [`WD d MM yyyy h:mmi (tz)`, `l:ID,tz:Asia/Jayapura,tzn:short`],
       expected: `Senin 18 Maret 1957 22:00 (GMT+9.30)` },
   ].forEach( (test, i) => doTest(...Object.values(test), i < 1) );
 
