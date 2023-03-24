@@ -92,5 +92,8 @@ See [this small stackblitz project](https://stackblitz.com/edit/web-platform-5wq
 - `ms`: Milliseconds number (0 - 999),
 - `yn`: The year name (used with some calendars, like chinese or tibetan),
 - `tz`: the time zone (e.g. 'GMT+1')
-   - **Note** the way time zone is displayed depends on the time zone name given (see `tzn:` in [syntax](#Syntax)) 
-     
+   - **Note** the way time zone is displayed depends on the time zone name given (see `tzn:` in [syntax](#Syntax))
+
+### Note on numeric vs 2-digit
+You would expect that `numeric` always returns 1 digit, but this is not always the case. It depends on the `locale` value used. 
+In this library the choice is made to **always** return 1 digit for `d`, `m`, `hh`, `mi`, and `s`.
