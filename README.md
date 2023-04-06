@@ -96,4 +96,4 @@ See [this small stackblitz project](https://stackblitz.com/edit/web-platform-5wq
 
 ### Note on numeric vs 2-digit
 You would expect that `numeric` always returns 1 digit, but this is not always the case. It depends on the `locale` value used. 
-In this library the choice is made to **always** return 1 digit for `d`, `m`, `hh`, `mi`, and `s`.
+In this library the choice is made to **always** return 1 digit for `d`, `m`, `h`, `mi`, and `s`.
