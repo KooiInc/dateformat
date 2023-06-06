@@ -90,6 +90,7 @@ See [this small stackblitz project](https://stackblitz.com/edit/web-platform-5wq
 - `s`: Second number (0 - 59)
 - `ss`: Second number (00 - 59)
 - `ms`: Milliseconds number (0 - 999),
+- `dp`: When the locale is in a 12 hour time zone, displays the <b>d</b>ay <b>p</b>eriod (AM or PM)
 - `yn`: The year name (used with some calendars, like chinese or tibetan),
 - `tz`: the time zone (e.g. 'GMT+1')
    - **Note** the way time zone is displayed depends on the time zone name given (see `tzn:` in [syntax](#Syntax))
