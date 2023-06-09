@@ -1,4 +1,5 @@
-export default DateFormatFactory();
+const defaultExport = DateFormatFactory();
+export { defaultExport as default, DateFormatFactory };
 
 function DateFormatFactory() {
   const [digits, numeric, long, short] = [`2-digit`, `numeric`, `long`, `short`];
@@ -23,7 +24,7 @@ function DateFormatFactory() {
       ms: {fractionalSecondDigits: 3},
       tz: {timeZoneName: `shortOffset`},
       dl: {locale: `default`},
-      h12: {hour12: true},
+      h12: {hour12: false},
       yn: {yearName: ``},
       ry: {relatedYear: true},
       msp: {fractionalSecond: true},
@@ -48,9 +49,9 @@ function DateFormatFactory() {
   };
   const extractFromTemplate = (rawTemplateString = `dtf`, plainTextIndex = 0) => {
     let formatStr = ` ${ rawTemplateString
-        .replace(/(?<=\{)(.+?)(?=})/g, _ => `[${plainTextIndex++}]`)
-        .replace(/[{}]/g, ``)
-        .trim() } `;
+      .replace(/(?<=\{)(.+?)(?=})/g, _ => `[${plainTextIndex++}]`)
+      .replace(/[{}]/g, ``)
+      .trim() } `;
     const texts = rawTemplateString.match(/(?<=\{)(.+?)(?=})/g) || [];
     return {
       get texts() { return texts; },
@@ -60,20 +61,20 @@ function DateFormatFactory() {
       get units() { return formatStr.match(dtfOptions.re) || []; },
       finalize(dtf = ``, h12 = ``, era = ``, yn = ``) {
         return formatStr
-          .replace(/~(\d+?)/g, `$1`)
+          .replace(/~([\d+]?)/g, `$1`)
           .replace(/dtf/, dtf)
           .replace(/era/, era)
-          .replace(/dp\b/, h12)
+          .replace(/dp\b|~dp\b/, h12)
           .replace(/yn\b/, yn)
           .replace(/\[(\d+?)]/g, (_, d) => texts[d].trim())
           .trim();
-        }
+      }
     };
   };
   const unSpacify = str => str.replace(/\s+/g, ``);
   const getOpts = (...opts) => opts?.reduce( (acc, optValue) =>
       ({...acc, ...(dtfOptions.retrieveDyn(optValue) || dtfOptions.fixed[optValue]),}),
-       dtfOptions.fixed.dl );
+    dtfOptions.fixed.dl );
   const dtNoParts = (date, xTemplate, moreOptions) => {
     const opts = getOpts(...unSpacify(moreOptions).split(`,`));
     const formatted = Intl.DateTimeFormat(opts.locale, opts).format(date);
@@ -88,12 +89,11 @@ function DateFormatFactory() {
     const dtf = Intl.DateTimeFormat(optsCollected.locale, optsCollected)
       .formatToParts(date)
       .reduce( (parts, v) =>
-          (v.type === `literal` ? parts : {...parts, [v.type]: checkNumeric(v.type, v.value) } ), {} );
+        (v.type === `literal` ? parts : {...parts, [v.type]: checkNumeric(v.type, v.value) } ), {} );
     opts.ms = optsCollected.fractionalSecondDigits ? opts.msp : opts.ms;
     opts.yyyy = dtf.relatedYear ? opts.ry : opts.yyyy;
     xTemplate.formatStr = xTemplate.formatStr
       .replace(dtfOptions.re, dtUnit => dtf[Object.keys(opts[dtUnit]).shift()] || dtUnit);
-
     return xTemplate.finalize(...[,dtf.dayPeriod, dtf.era, dtf.yearName]);
   }
 
