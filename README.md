@@ -1,7 +1,7 @@
 # intl-DateFormatter
 
 A utility module to format a js Date using [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat) with a formatting string
-template (like '`yyyy/mm/dd`').
+template (like '`yyyy/mm/dd`'). This module is used in the more comprehensive date module [`es-date-fiddler`](https://github.com/KooiInc/es-date-fiddler).
 
 ### Usage
 The module is available as ES module import @
