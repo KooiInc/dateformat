@@ -80,6 +80,8 @@ function DateFormatFactory() {
     const formatted = Intl.DateTimeFormat(opts.locale, opts).format(date);
     return xTemplate.finalize(formatted);
   };
+  const getMonthName = (forDate, locale, timeZone, shrt) =>
+    forDate.toLocaleString(locale, {timeZone: timeZone, month: shrt ? short : long});
   const dtFormatted = (date, xTemplate, moreOptions) => {
     const optsCollected = getOpts( ...xTemplate.units.concat(unSpacify(moreOptions).split(`,`)).flat() );
     const opts = {...dtfOptions.fixed};
@@ -89,14 +91,19 @@ function DateFormatFactory() {
     const dtf = Intl.DateTimeFormat(optsCollected.locale, optsCollected)
       .formatToParts(date)
       .reduce( (parts, v) =>
-        (v.type === `literal` ? parts : {...parts, [v.type]: checkNumeric(v.type, v.value) } ), {} );
+        ((v.type === `literal` && /[ ,/-]/.test(v.value)) ? parts : {...parts, [v.type]: checkNumeric(v.type, v.value) } ), {} );
     opts.ms = optsCollected.fractionalSecondDigits ? opts.msp : opts.ms;
     opts.yyyy = dtf.relatedYear ? opts.ry : opts.yyyy;
+    
     xTemplate.formatStr = xTemplate.formatStr
-      .replace(dtfOptions.re, dtUnit => dtf[Object.keys(opts[dtUnit]).shift()] || dtUnit);
-    return xTemplate.finalize(...[,dtf.dayPeriod, dtf.era, dtf.yearName]);
+      .replace(dtfOptions.re, dtUnit =>
+        /^(M|MM)$/.test(dtUnit)
+          ? getMonthName(date, optsCollected.locale, optsCollected.timeZone, /^M$/.test(dtUnit))
+          : dtf[Object.keys(opts[dtUnit]).shift()] || dtUnit);
+    
+    return xTemplate.finalize(...[undefined, dtf.dayPeriod, dtf.era, dtf.yearName]);
   }
-
+  
   return (date, template, moreOptions = `l:default`) => (/ds:|ts:/.test(moreOptions))
     ? dtNoParts(...[date, extractFromTemplate(undefined), moreOptions])
     : dtFormatted(...[date, extractFromTemplate(template || undefined), moreOptions]);
