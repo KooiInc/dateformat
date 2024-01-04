@@ -28,8 +28,5 @@
   "bugs": {
     "url": "https://github.com/KooiInc/dateformat/issues"
   },
-  "homepage": "https://github.com/KooiInc/dateformat#readme",
-  "devDependencies": {
-    "chokidar": "^3.5.3"
-  }
+  "homepage": "https://github.com/KooiInc/dateformat#readme"
 }
