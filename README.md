@@ -1,14 +1,17 @@
+[![](https://deno.bundlejs.com/?q=intl-dateformatter&badge)](https://bundlejs.com/?q=intl-dateformatter)
+[![](https://img.shields.io/npm/v/intl-dateformatter.svg?labelColor=cb3837&logo=npm&color=dcfdd9)](https://www.npmjs.com/package/intl-dateformatters)
+[![dependencies](https://depx.co/api/badge/intl-dateformatter)](https://depx.co/pkg/intl-dateformatter)
+
 # intl-DateFormatter
 
 A utility module to format a js Date using [Intl.DateTimeFormat](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat) with a formatting string
 template (like '`yyyy/mm/dd`'). 
 
-**Note**: this module is used in the more comprehensive date module [`es-date-fiddler`](https://github.com/KooiInc/es-date-fiddler).
+**Note**: this module is used in the more comprehensive date-time module [`ticktock`](https://github.com/KooiInc/ticktock.js).
 
 ### Usage
 The module is available as ES module import @
 - https://kooiinc.github.io/dateformat/index.js
-- https://dateformat.kooi.dev/index.js
 - *minified by cdn.jsdelivr.net from npm*
   <br>https://cdn.jsdelivr.net/npm/intl-dateformatter@latest/index.min.js
 
